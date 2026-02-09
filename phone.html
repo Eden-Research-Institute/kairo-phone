@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIRO'S PHONE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        
+        * { box-sizing: border-box; user-select: none; }
+        body { 
+            margin: 0; padding: 0; 
+            background: #111; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; font-family: 'Inter', sans-serif; 
+        }
+
+        /* 폰 프레임 */
+        .phone-frame {
+            width: 360px; height: 740px;
+            background: #000;
+            border-radius: 45px;
+            border: 10px solid #222;
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 노치 & 상단바 */
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 25px; background: #000;
+            border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
+            z-index: 100;
+        }
+        .status-bar {
+            padding: 12px 25px; display: flex; justify-content: space-between;
+            font-size: 13px; color: #fff; font-weight: 600; position: relative; z-index: 90;
+        }
+
+        /* --- 1. 잠금 화면 (비번 입력) --- */
+        .lock-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* 배경: 따뜻한 느낌의 추상화 혹은 흐릿한 이미지 */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/360x740/?pastel,sky');
+            background-size: cover;
+            display: flex; flex-direction: column; align-items: center; padding-top: 80px;
+            color: #fff; backdrop-filter: blur(5px);
+            transition: transform 0.4s ease-in-out;
+            z-index: 50;
+        }
+        .lock-time { font-size: 72px; font-weight: 200; letter-spacing: -2px; }
+        .lock-date { font-size: 18px; margin-top: -10px; font-weight: 400; margin-bottom: 40px; }
+
+        /* 비번 입력 UI */
+        .passcode-dots { display: flex; gap: 15px; margin-bottom: 40px; }
+        .dot { width: 12px; height: 12px; border: 1px solid #fff; border-radius: 50%; transition: 0.2s; }
+        .dot.filled { background: #fff; }
+
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 30px; width: 80%; }
+        .key { 
+            width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.15); 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 24px; font-weight: 400; cursor: pointer; transition: 0.2s;
+        }
+        .key:active { background: rgba(255,255,255,0.4); }
+        .key:hover { background: rgba(255,255,255,0.2); }
+
+        /* 잠금 해제 실패 애니메이션 */
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+
+        /* --- 2. 홈 화면 --- */
+        .home-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a1a1a;
+            display: flex; flex-direction: column; padding-top: 60px;
+            z-index: 10;
+        }
+        
+        /* 위젯: D-Day 설정 가능 */
+        .widget-area { padding: 20px; }
+        .d-day-widget {
+            background: linear-gradient(135deg, #FF9A9E, #FECFEF); /* 사랑스러운 색감 */
+            border-radius: 20px; padding: 25px; color: #fff;
+            box-shadow: 0 10px 20px rgba(255, 154, 158, 0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .dd-title { font-size: 13px; font-weight: 600; opacity: 0.9; }
+        .dd-count { font-size: 36px; font-weight: 800; margin: 5px 0; }
+        .dd-sub { font-size: 12px; text-align: right; opacity: 0.8; font-weight: 500;}
+
+        /* 앱 아이콘들 */
+        .app-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 10px;
+            padding: 20px; margin-top: auto; margin-bottom: 30px;
+        }
+        .app-icon { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; }
+        .app-icon:active { transform: scale(0.9); }
+        .icon-img {
+            width: 60px; height: 60px; border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 26px; color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .app-name { font-size: 11px; color: #fff; font-weight: 500; }
+
+        .ic-gal { background: #4facfe; } 
+        .ic-memo { background: #ffd166; } 
+        .ic-search { background: #06d6a0; } 
+        .ic-call { background: #ef476f; } 
+        .ic-rec { background: #118ab2; } 
+
+        /* --- 3. 앱 실행 화면 (공통) --- */
+        .app-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; z-index: 20;
+            transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+        .app-screen.open { transform: translateY(0); }
+        
+        .app-header {
+            padding: 50px 20px 15px; font-size: 18px; font-weight: 700;
+            border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.98); color: #333;
+        }
+        .close-btn { font-size: 14px; color: #007aff; cursor: pointer; font-weight: 600; }
+        .app-content { flex: 1; overflow-y: auto; padding: 20px; background: #fafafa; }
+
+        /* 앱별 디테일 (순애 버전) */
+        .photo { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .photo:hover img { transform: scale(1.05); }
+        .photo-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: #fff; font-size: 11px; padding: 10px 10px 5px; }
+
+        .memo-item { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
+        .memo-date { font-size: 11px; color: #aaa; margin-bottom: 8px; font-weight: 600; }
+        .memo-text { font-size: 14px; line-height: 1.6; color: #444; }
+
+        .search-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .search-icon { color: #aaa; font-size: 14px; }
+        .search-text { font-size: 14px; color: #333; flex: 1; }
+        .search-date { font-size: 11px; color: #bbb; }
+
+        .rec-item { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .play-icon { width: 36px; height: 36px; background: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #ef476f; font-size: 14px; }
+
+        /* 하단 바 */
+        .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
+
+        /* 날짜 입력 모달 */
+        .date-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 200; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .date-input { padding: 10px; font-size: 16px; border-radius: 8px; border: none; margin-bottom: 10px; }
+        .save-btn { padding: 10px 20px; background: #007aff; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+    </style>
+</head>
+<body>
+
+    <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+            <span id="top-clock">14:02</span>
+            <span>5G</span>
+        </div>
+
+        <div class="lock-screen" id="lockScreen">
+            <div class="lock-time" id="lock-clock">14:02</div>
+            <div class="lock-date" id="lock-date">2월 14일 토요일</div>
+
+            <div class="passcode-dots">
+                <div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div><div class="dot" id="d4"></div>
+            </div>
+
+            <div class="keypad">
+                <div class="key" onclick="pressKey(1)">1</div><div class="key" onclick="pressKey(2)">2</div><div class="key" onclick="pressKey(3)">3</div>
+                <div class="key" onclick="pressKey(4)">4</div><div class="key" onclick="pressKey(5)">5</div><div class="key" onclick="pressKey(6)">6</div>
+                <div class="key" onclick="pressKey(7)">7</div><div class="key" onclick="pressKey(8)">8</div><div class="key" onclick="pressKey(9)">9</div>
+                <div class="key" style="background:transparent;"></div><div class="key" onclick="pressKey(0)">0</div><div class="key" onclick="deleteKey()">←</div>
+            </div>
+        </div>
+
+        <div class="home-screen">
+            <div class="widget-area">
+                <div class="d-day-widget" onclick="openDateModal()">
+                    <div class="dd-title">우리가 처음 만난 날</div>
+                    <div class="dd-count" id="dday-display">D + ???</div>
+                    <div class="dd-sub">터치해서 날짜 설정하기</div>
+                </div>
+            </div>
+
+            <div class="app-grid">
+                <div class="app-icon" onclick="openApp('gallery')">
+                    <div class="icon-img ic-gal">🖼️</div><div class="app-name">앨범</div>
+                </div>
+                <div class="app-icon" onclick="openApp('memo')">
+                    <div class="icon-img ic-memo">📒</div><div class="app-name">일기장</div>
+                </div>
+                <div class="app-icon" onclick="openApp('search')">
+                    <div class="icon-img ic-search">🌏</div><div class="app-name">인터넷</div>
+                </div>
+                <div class="app-icon" onclick="openApp('record')">
+                    <div class="icon-img ic-rec">🎙️</div><div class="app-name">녹음</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-screen" id="app-gallery">
+            <div class="app-header">나의 앨범 <span class="close-btn" onclick="closeApp('gallery')">닫기</span></div>
+            <div class="app-content">
+                <div style="font-size:12px; color:#999; margin-bottom:10px;">즐겨찾는 항목</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="photo"><img src="https://source.unsplash.com/200x200/?hand,holding,flower" alt=""><div class="photo-caption">그녀가 처음 준 종이꽃</div></div>
+                    <div class="photo"><img src="https://source.unsplash.com/200x200/?sunlight,window" alt=""><div class="photo-caption">창가에 앉은 뒷모습</div></div>
+                    <div class="photo"><img src="https://source.unsplash.com/200x200/?sketch,drawing,pencil" alt=""><div class="photo-caption">나를 그려준 그림 (귀엽다)</div></div>
+                    <div class="photo"><img src="https://source.unsplash.com/200x200/?sleeping,peaceful" alt=""><div class="photo-caption">세상에서 제일 평온한 얼굴</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-screen" id="app-memo">
+            <div class="app-header">비밀 일기 <span class="close-btn" onclick="closeApp('memo')">닫기</span></div>
+            <div class="app-content">
+                <div class="memo-item">
+                    <div class="memo-date">오늘 새벽 02:00</div>
+                    <div class="memo-text">악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다. <br>내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.<br>이 손을 영원히 놓지 않을 것이다.</div>
+                </div>
+                <div class="memo-item">
+                    <div class="memo-date">어제</div>
+                    <div class="memo-text">오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다. <br>단 것을 좋아하는구나. 기억해 둬야지.<br>다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다.</div>
+                </div>
+                <div class="memo-item">
+                    <div class="memo-date">2026. 02. 05</div>
+                    <div class="memo-text">내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.<br>조금만 기다려줘. 완벽한 계획을 세우고 있어.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-screen" id="app-search">
+            <div class="app-header">검색 기록 <span class="close-btn" onclick="closeApp('search')">닫기</span></div>
+            <div class="app-content">
+                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">악몽을 꾸지 않게 하는 차(Tea)</span><span class="search-date">방금 전</span></div>
+                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">여자 머리 안 아프게 묶는 법</span><span class="search-date">1시간 전</span></div>
+                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">햇빛을 못 보면 생기는 병</span><span class="search-date">어제</span></div>
+                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">수제 초콜릿 만드는 법 (초보)</span><span class="search-date">2일 전</span></div>
+                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">사랑하는 사람을 지키는 법</span><span class="search-date">3일 전</span></div>
+            </div>
+        </div>
+
+        <div class="app-screen" id="app-record">
+            <div class="app-header">음성 메모 <span class="close-btn" onclick="closeApp('record')">닫기</span></div>
+            <div class="app-content">
+                <div class="rec-item"><div class="play-icon">▶</div><div><div style="font-weight:bold;">처음으로 웃은 날.mp3</div><div style="font-size:12px; color:#888;">2026.02.14 | 00:15</div></div></div>
+                <div class="rec-item"><div class="play-icon">▶</div><div><div style="font-weight:bold;">자장가 연습 (망함).mp3</div><div style="font-size:12px; color:#888;">2026.02.10 | 03:40</div></div></div>
+                <div class="rec-item"><div class="play-icon">▶</div><div><div style="font-weight:bold;">새 소리 (들려주려고).mp3</div><div style="font-size:12px; color:#888;">2026.02.01 | 05:20</div></div></div>
+            </div>
+        </div>
+
+        <div class="home-indicator"></div>
+
+        <div class="date-modal" id="dateModal">
+            <div style="color:#fff; margin-bottom:15px; font-weight:bold;">처음 만난 날짜를 입력하세요</div>
+            <input type="date" id="input-date" class="date-input">
+            <button class="save-btn" onclick="saveDDay()">설정 저장</button>
+            <button class="save-btn" style="background:#333; margin-top:10px;" onclick="document.getElementById('dateModal').style.display='none'">취소</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. 잠금 화면 로직 ---
+        let inputCode = "";
+        const correctCode = "0000"; // 비밀번호 (변경 가능)
+
+        function pressKey(num) {
+            if (inputCode.length < 4) {
+                inputCode += num;
+                updateDots();
+                if (inputCode.length === 4) {
+                    setTimeout(checkCode, 200);
+                }
+            }
+        }
+
+        function deleteKey() {
+            inputCode = inputCode.slice(0, -1);
+            updateDots();
+        }
+
+        function updateDots() {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById('d' + i);
+                if (i <= inputCode.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            }
+        }
+
+        function checkCode() {
+            if (inputCode === correctCode) {
+                document.getElementById('lockScreen').style.transform = "translateY(-100%)";
+            } else {
+                // 틀림 -> 흔들림 효과
+                const lock = document.getElementById('lockScreen');
+                lock.classList.add('shake');
+                setTimeout(() => {
+                    lock.classList.remove('shake');
+                    inputCode = "";
+                    updateDots();
+                }, 400);
+            }
+        }
+
+        // --- 2. 앱 열기/닫기 ---
+        function openApp(appName) { document.getElementById('app-' + appName).classList.add('open'); }
+        function closeApp(appName) { document.getElementById('app-' + appName).classList.remove('open'); }
+
+        // --- 3. D-Day 설정 로직 ---
+        function openDateModal() { document.getElementById('dateModal').style.display = 'flex'; }
+        
+        function saveDDay() {
+            const dateVal = document.getElementById('input-date').value;
+            if (dateVal) {
+                localStorage.setItem('kairo_meet_date', dateVal);
+                calculateDDay(dateVal);
+                document.getElementById('dateModal').style.display = 'none';
+            }
+        }
+
+        function calculateDDay(dateStr) {
+            const start = new Date(dateStr).getTime();
+            const now = new Date().getTime();
+            const gap = now - start;
+            const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; // 1일부터 시작
+            document.getElementById('dday-display').innerText = day > 0 ? "D + " + day : "D - " + Math.abs(day);
+            document.querySelector('.dd-sub').innerText = dateStr + " 부터 사랑하는 중";
+        }
+
+        // 초기 로드 시 저장된 날짜 있으면 불러오기
+        const savedDate = localStorage.getItem('kairo_meet_date');
+        if (savedDate) calculateDDay(savedDate);
+
+        // --- 4. 시계 ---
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: "2-digit", minute: "2-digit" });
+            const dateStr = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' });
+            document.getElementById('top-clock').innerText = timeStr;
+            document.getElementById('lock-clock').innerText = timeStr;
+            document.getElementById('lock-date').innerText = dateStr;
+        }
+        setInterval(updateClock, 1000); updateClock();
+    </script>
+</body>
+</html>
