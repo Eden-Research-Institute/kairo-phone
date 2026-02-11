@@ -41,7 +41,6 @@
         /* --- 1. 잠금 화면 (비번 입력) --- */
         .lock-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* 배경: 따뜻한 느낌의 추상화 혹은 흐릿한 이미지 */
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/360x740/?pastel,sky');
             background-size: cover;
             display: flex; flex-direction: column; align-items: center; padding-top: 80px;
@@ -52,7 +51,6 @@
         .lock-time { font-size: 72px; font-weight: 200; letter-spacing: -2px; }
         .lock-date { font-size: 18px; margin-top: -10px; font-weight: 400; margin-bottom: 40px; }
 
-        /* 비번 입력 UI */
         .passcode-dots { display: flex; gap: 15px; margin-bottom: 40px; }
         .dot { width: 12px; height: 12px; border: 1px solid #fff; border-radius: 50%; transition: 0.2s; }
         .dot.filled { background: #fff; }
@@ -66,7 +64,6 @@
         .key:active { background: rgba(255,255,255,0.4); }
         .key:hover { background: rgba(255,255,255,0.2); }
 
-        /* 잠금 해제 실패 애니메이션 */
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
 
@@ -78,10 +75,9 @@
             z-index: 10;
         }
         
-        /* 위젯: D-Day 설정 가능 */
         .widget-area { padding: 20px; }
         .d-day-widget {
-            background: linear-gradient(135deg, #FF9A9E, #FECFEF); /* 사랑스러운 색감 */
+            background: linear-gradient(135deg, #FF9A9E, #FECFEF);
             border-radius: 20px; padding: 25px; color: #fff;
             box-shadow: 0 10px 20px rgba(255, 154, 158, 0.3);
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
@@ -91,7 +87,6 @@
         .dd-count { font-size: 36px; font-weight: 800; margin: 5px 0; }
         .dd-sub { font-size: 12px; text-align: right; opacity: 0.8; font-weight: 500;}
 
-        /* 앱 아이콘들 */
         .app-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 10px;
             padding: 20px; margin-top: auto; margin-bottom: 30px;
@@ -112,7 +107,7 @@
         .ic-call { background: #ef476f; } 
         .ic-rec { background: #118ab2; } 
 
-        /* --- 3. 앱 실행 화면 (공통) --- */
+        /* --- 3. 앱 실행 화면 --- */
         .app-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #fff; z-index: 20;
@@ -129,8 +124,12 @@
         .close-btn { font-size: 14px; color: #007aff; cursor: pointer; font-weight: 600; }
         .app-content { flex: 1; overflow-y: auto; padding: 20px; background: #fafafa; }
 
-        /* 앱별 디테일 (순애 버전) */
-        .photo { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* 앨범 추가 버튼 */
+        .add-photo-btn { font-size: 24px; color: #007aff; cursor: pointer; margin-right: 15px; }
+
+        /* 앱별 디테일 */
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .photo { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 0; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
         .photo:hover img { transform: scale(1.05); }
         .photo-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: #fff; font-size: 11px; padding: 10px 10px 5px; }
@@ -147,7 +146,6 @@
         .rec-item { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .play-icon { width: 36px; height: 36px; background: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #ef476f; font-size: 14px; }
 
-        /* 하단 바 */
         .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
 
         /* 날짜 입력 모달 */
@@ -212,15 +210,22 @@
         </div>
 
         <div class="app-screen" id="app-gallery">
-            <div class="app-header">나의 앨범 <span class="close-btn" onclick="closeApp('gallery')">닫기</span></div>
+            <div class="app-header">
+                나의 앨범 
+                <div style="display:flex; align-items:center;">
+                    <span class="add-photo-btn" onclick="document.getElementById('photoInput').click()">+</span>
+                    <span class="close-btn" onclick="closeApp('gallery')">닫기</span>
+                </div>
+                <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="handleAddPhoto(this)">
+            </div>
             <div class="app-content">
                 <div style="font-size:12px; color:#999; margin-bottom:10px;">즐겨찾는 항목</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="gallery-grid" id="gallery-container">
                     <div class="photo"><img src="https://source.unsplash.com/200x200/?hand,holding,flower" alt=""><div class="photo-caption">그녀가 처음 준 종이꽃</div></div>
                     <div class="photo"><img src="https://source.unsplash.com/200x200/?sunlight,window" alt=""><div class="photo-caption">창가에 앉은 뒷모습</div></div>
                     <div class="photo"><img src="https://source.unsplash.com/200x200/?sketch,drawing,pencil" alt=""><div class="photo-caption">나를 그려준 그림 (귀엽다)</div></div>
                     <div class="photo"><img src="https://source.unsplash.com/200x200/?sleeping,peaceful" alt=""><div class="photo-caption">세상에서 제일 평온한 얼굴</div></div>
-                </div>
+                    </div>
             </div>
         </div>
 
@@ -276,7 +281,7 @@
     <script>
         // --- 1. 잠금 화면 로직 ---
         let inputCode = "";
-        const correctCode = "0918"; // 비밀번호 (변경 가능)
+        const correctCode = "0918"; 
 
         function pressKey(num) {
             if (inputCode.length < 4) {
@@ -305,7 +310,6 @@
             if (inputCode === correctCode) {
                 document.getElementById('lockScreen').style.transform = "translateY(-100%)";
             } else {
-                // 틀림 -> 흔들림 효과
                 const lock = document.getElementById('lockScreen');
                 lock.classList.add('shake');
                 setTimeout(() => {
@@ -320,7 +324,7 @@
         function openApp(appName) { document.getElementById('app-' + appName).classList.add('open'); }
         function closeApp(appName) { document.getElementById('app-' + appName).classList.remove('open'); }
 
-        // --- 3. D-Day 설정 로직 ---
+        // --- 3. D-Day 설정 ---
         function openDateModal() { document.getElementById('dateModal').style.display = 'flex'; }
         
         function saveDDay() {
@@ -336,12 +340,11 @@
             const start = new Date(dateStr).getTime();
             const now = new Date().getTime();
             const gap = now - start;
-            const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; // 1일부터 시작
+            const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; 
             document.getElementById('dday-display').innerText = day > 0 ? "D + " + day : "D - " + Math.abs(day);
             document.querySelector('.dd-sub').innerText = dateStr + " 부터 사랑하는 중";
         }
 
-        // 초기 로드 시 저장된 날짜 있으면 불러오기
         const savedDate = localStorage.getItem('kairo_meet_date');
         if (savedDate) calculateDDay(savedDate);
 
@@ -355,6 +358,63 @@
             document.getElementById('lock-date').innerText = dateStr;
         }
         setInterval(updateClock, 1000); updateClock();
+
+        // --- 5. 앨범 사진 추가 기능 (NEW) ---
+        function handleAddPhoto(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            // 파일 용량 체크 (대략 2MB 넘으면 경고)
+            if (file.size > 2 * 1024 * 1024) {
+                alert("파일 용량이 너무 큽니다. (2MB 이하 권장)");
+                return;
+            }
+
+            const comment = prompt("이 사진에 대한 기억을 입력하세요 (ex: 행복했던 날)");
+            if (comment === null) return; // 취소 누름
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                savePhoto(base64Img, comment || "기억 없음");
+            };
+            reader.readAsDataURL(file);
+            
+            // 입력값 초기화 (같은 파일 다시 올릴 수 있게)
+            input.value = ''; 
+        }
+
+        function savePhoto(imgSrc, caption) {
+            // 기존 사진 불러오기
+            const photos = JSON.parse(localStorage.getItem('kairo_user_photos')) || [];
+            
+            // 새 사진 추가
+            photos.push({ src: imgSrc, caption: caption });
+            
+            // 저장 (용량 초과 에러 방지 try-catch)
+            try {
+                localStorage.setItem('kairo_user_photos', JSON.stringify(photos));
+                renderPhoto(imgSrc, caption); // 화면에 즉시 표시
+            } catch (e) {
+                alert("저장 공간이 부족합니다. 사진을 추가할 수 없습니다.");
+            }
+        }
+
+        function renderPhoto(src, caption) {
+            const container = document.getElementById('gallery-container');
+            const div = document.createElement('div');
+            div.className = 'photo';
+            div.innerHTML = `<img src="${src}" alt="User Photo"><div class="photo-caption">${caption}</div>`;
+            container.appendChild(div);
+        }
+
+        // 초기 로드 시 저장된 사진들 불러오기
+        function loadSavedPhotos() {
+            const photos = JSON.parse(localStorage.getItem('kairo_user_photos')) || [];
+            photos.forEach(p => renderPhoto(p.src, p.caption));
+        }
+        loadSavedPhotos();
+
     </script>
 </body>
 </html>
