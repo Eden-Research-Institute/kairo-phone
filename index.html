@@ -56,11 +56,7 @@
         .dot.filled { background: #fff; }
 
         .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 30px; width: 80%; }
-        .key { 
-            width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.15); 
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 24px; font-weight: 400; cursor: pointer; transition: 0.2s;
-        }
+        .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 400; cursor: pointer; transition: 0.2s; }
         .key:active { background: rgba(255,255,255,0.4); }
         .key:hover { background: rgba(255,255,255,0.2); }
 
@@ -106,6 +102,7 @@
         .ic-search { background: #06d6a0; } 
         .ic-call { background: #ef476f; } 
         .ic-rec { background: #118ab2; } 
+        .ic-cal { background: #9b5de5; } 
 
         /* --- 3. 앱 실행 화면 --- */
         .app-screen {
@@ -126,14 +123,45 @@
 
         .add-photo-btn { font-size: 24px; color: #007aff; cursor: pointer; margin-right: 15px; }
 
-        /* 갤러리 그리드 */
+        /* 캘린더 스타일 */
+        .cal-list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 30px; }
+        .cal-item { 
+            background: #fff; padding: 15px 20px; border-radius: 12px; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03); border: 1px solid #eee;
+            position: relative; overflow: hidden;
+        }
+        
+        /* 1주년, 2주년 등 기념일 강조 */
+        .cal-item.milestone { border: 1px solid #FF9A9E; background: #fff5f5; }
+        
+        /* 리플리 생일 (중요!) */
+        .cal-item.ripley-bd { 
+            border: 1px solid #9b5de5; background: #f3e5f5; 
+        }
+        .cal-item.ripley-bd::before {
+            content: '♥'; position: absolute; top: -5px; left: -5px; font-size: 40px; color: rgba(155, 93, 229, 0.1);
+        }
+
+        /* 카이로 생일 (무관심) */
+        .cal-item.kairo-bd { background: #f9f9f9; opacity: 0.7; }
+        
+        /* 발렌타인/화이트 */
+        .cal-item.love-day { background: #fff0f6; border-color: #ffadd2; }
+
+        .cal-title { font-size: 15px; font-weight: 700; color: #333; display: flex; align-items: center; gap: 5px; }
+        .cal-date { font-size: 13px; color: #666; margin-top: 2px; }
+        .cal-dday { font-size: 12px; font-weight: bold; color: #9b5de5; background: #fff; padding: 4px 8px; border-radius: 6px; border: 1px solid #eee; }
+        .cal-dday.past { background: #eee; color: #aaa; text-decoration: line-through; border: none; }
+        .cal-dday.today { background: #FF9A9E; color: #fff; border: none; }
+
+        /* 갤러리/메모/검색/녹음 스타일 (유지) */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .photo { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 0; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
         .photo:hover img { transform: scale(1.05); }
         .photo-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: #fff; font-size: 11px; padding: 10px 10px 5px; }
 
-        /* 기타 앱 스타일 */
         .memo-item { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
         .memo-date { font-size: 11px; color: #aaa; margin-bottom: 8px; font-weight: 600; }
         .memo-text { font-size: 14px; line-height: 1.6; color: #444; }
@@ -148,29 +176,16 @@
 
         .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
 
-        /* --- 4. 모달들 (팝업) --- */
-        /* 날짜 입력 모달 */
-        .date-modal {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 200; display: none;
-            justify-content: center; align-items: center; flex-direction: column;
-        }
+        /* 모달들 */
+        .date-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: none; justify-content: center; align-items: center; flex-direction: column; }
         .date-input { padding: 10px; font-size: 16px; border-radius: 8px; border: none; margin-bottom: 10px; }
         .save-btn { padding: 10px 20px; background: #007aff; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* 사진 크게 보기 모달 (Lightbox) */
-        .image-modal {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 300; display: none;
-            flex-direction: column; justify-content: center; align-items: center;
-        }
+        .image-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 300; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .full-image { max-width: 100%; max-height: 70%; object-fit: contain; }
         .image-caption { color: #fff; margin-top: 20px; font-size: 14px; padding: 0 20px; text-align: center; }
         .image-actions { margin-top: 30px; display: flex; gap: 20px; }
-        .action-btn { 
-            background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3); 
-            padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; 
-        }
+        .action-btn { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; }
 
     </style>
 </head>
@@ -206,8 +221,20 @@
             <div class="app-grid">
                 <div class="app-icon" onclick="openApp('gallery')"><div class="icon-img ic-gal">🖼️</div><div class="app-name">앨범</div></div>
                 <div class="app-icon" onclick="openApp('memo')"><div class="icon-img ic-memo">📒</div><div class="app-name">일기장</div></div>
+                <div class="app-icon" onclick="openApp('calendar')"><div class="icon-img ic-cal">📅</div><div class="app-name">기념일</div></div>
                 <div class="app-icon" onclick="openApp('search')"><div class="icon-img ic-search">🌏</div><div class="app-name">인터넷</div></div>
                 <div class="app-icon" onclick="openApp('record')"><div class="icon-img ic-rec">🎙️</div><div class="app-name">녹음</div></div>
+            </div>
+        </div>
+
+        <div class="app-screen" id="app-calendar">
+            <div class="app-header">The Couple <span class="close-btn" onclick="closeApp('calendar')">닫기</span></div>
+            <div class="app-content">
+                <div style="font-size:12px; color:#999; margin-bottom:15px; text-align:center;">
+                    우리의 모든 순간들
+                </div>
+                <div class="cal-list" id="calendar-list">
+                    </div>
             </div>
         </div>
 
@@ -230,7 +257,6 @@
                 </div>
             </div>
         </div>
-
         <div class="app-screen" id="app-memo">
             <div class="app-header">비밀 일기 <span class="close-btn" onclick="closeApp('memo')">닫기</span></div>
             <div class="app-content">
@@ -290,17 +316,132 @@
         function openApp(appName) { document.getElementById('app-' + appName).classList.add('open'); }
         function closeApp(appName) { document.getElementById('app-' + appName).classList.remove('open'); }
 
-        // --- 3. D-Day ---
+        // --- 3. D-Day 및 캘린더 연동 ---
         function openDateModal() { document.getElementById('dateModal').style.display = 'flex'; }
-        function saveDDay() { const dateVal = document.getElementById('input-date').value; if (dateVal) { localStorage.setItem('kairo_meet_date', dateVal); calculateDDay(dateVal); document.getElementById('dateModal').style.display = 'none'; } }
-        function calculateDDay(dateStr) { const start = new Date(dateStr).getTime(); const now = new Date().getTime(); const gap = now - start; const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; document.getElementById('dday-display').innerText = day > 0 ? "D + " + day : "D - " + Math.abs(day); document.querySelector('.dd-sub').innerText = dateStr + " 부터 사랑하는 중"; }
-        const savedDate = localStorage.getItem('kairo_meet_date'); if (savedDate) calculateDDay(savedDate);
+        
+        function saveDDay() {
+            const dateVal = document.getElementById('input-date').value;
+            if (dateVal) {
+                localStorage.setItem('kairo_meet_date', dateVal);
+                calculateDDay(dateVal);
+                renderCalendar(); 
+                document.getElementById('dateModal').style.display = 'none';
+            }
+        }
+
+        function calculateDDay(dateStr) {
+            const start = new Date(dateStr).getTime();
+            const now = new Date().getTime();
+            const gap = now - start;
+            const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; 
+            document.getElementById('dday-display').innerText = day > 0 ? "D + " + day : "D - " + Math.abs(day);
+            document.querySelector('.dd-sub').innerText = dateStr + " 부터 사랑하는 중";
+        }
+        
+        // --- ★ 캘린더 자동 계산 로직 (기념일 통합) ★ ---
+        function renderCalendar() {
+            const dateStr = localStorage.getItem('kairo_meet_date');
+            const container = document.getElementById('calendar-list');
+            if(!dateStr) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#999; font-size:13px;">홈 화면 위젯에서<br>날짜를 먼저 설정해주세요!</div>';
+                return;
+            }
+
+            const startDate = new Date(dateStr);
+            const now = new Date();
+            now.setHours(0,0,0,0);
+            const events = [];
+
+            // 1. 고정 기념일 (100일, 200일...)
+            const dayMilestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+            dayMilestones.forEach(d => {
+                let target = new Date(startDate);
+                target.setDate(startDate.getDate() + d - 1);
+                events.push({ date: target, title: `${d}일`, type: 'milestone' });
+            });
+
+            // 2. 연 단위 기념일 (1주년 ~ 5주년)
+            for(let i=1; i<=5; i++) {
+                let target = new Date(startDate);
+                target.setFullYear(startDate.getFullYear() + i); // 정확히 연도만 더함
+                // (윤년 등 미세한 차이는 커플앱들마다 방식이 다른데, 보통 연도를 바꿈)
+                let title = `${i}주년`;
+                if(i===1) title = "⭐ 1주년";
+                if(i===2) title = "⭐⭐ 2주년";
+                if(i===3) title = "⭐⭐⭐ 3주년";
+                events.push({ date: target, title: title, type: 'milestone', isYear: true });
+            }
+
+            // 3. 매년 반복되는 이벤트 (올해, 내년 기준 추가)
+            // 리플리 생일(9/18), 카이로 생일(8/16), 발렌타인(2/14), 화이트(3/14)
+            const recurringEvents = [
+                { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" },
+                { name: "생일 (카이로)", month: 8, day: 16, type: "kairo-bd" },
+                { name: "발렌타인데이 🍫", month: 2, day: 14, type: "love-day" },
+                { name: "화이트데이 🍭", month: 3, day: 14, type: "love-day" }
+            ];
+
+            const currentYear = now.getFullYear();
+            // 올해와 내년의 이벤트를 모두 생성해서 리스트에 넣음
+            [currentYear, currentYear+1].forEach(year => {
+                recurringEvents.forEach(ev => {
+                    let target = new Date(year, ev.month - 1, ev.day);
+                    events.push({ date: target, title: ev.name, type: ev.type });
+                });
+            });
+
+            // 4. 날짜순 정렬
+            events.sort((a, b) => a.date - b.date);
+
+            // 5. HTML 생성
+            let html = '';
+            events.forEach(ev => {
+                // 이미 지난 이벤트 중, 너무 오래된(3개월 전) 건 안 보여줄 수도 있지만 일단 다 보여줌
+                // 단, 반복 이벤트는 "오늘 이후" 또는 "최근 것"만 보여주는 게 깔끔할 수 있음.
+                // 여기서는 단순하게 리스트업
+                
+                const week = ['일', '월', '화', '수', '목', '금', '토'];
+                const dayOfWeek = week[ev.date.getDay()];
+                const dateString = `${ev.date.getFullYear()}.${(ev.date.getMonth()+1).toString().padStart(2,'0')}.${ev.date.getDate().toString().padStart(2,'0')} (${dayOfWeek})`;
+                
+                // D-Day 계산
+                const diffTime = ev.date - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                let dDayBadge = "";
+                if(diffDays < 0) dDayBadge = `<span class="cal-dday past">지남</span>`;
+                else if(diffDays === 0) dDayBadge = `<span class="cal-dday today">TODAY</span>`;
+                else dDayBadge = `<span class="cal-dday">D-${diffDays}</span>`;
+
+                // 스타일 클래스
+                let itemClass = "";
+                if(ev.isYear) itemClass = "milestone"; // 주년
+                if(ev.type === "ripley-bd") itemClass = "ripley-bd";
+                if(ev.type === "kairo-bd") itemClass = "kairo-bd";
+                if(ev.type === "love-day") itemClass = "love-day";
+
+                html += `
+                    <div class="cal-item ${itemClass}">
+                        <div>
+                            <div class="cal-title">${ev.title}</div>
+                            <div class="cal-date">${dateString}</div>
+                        </div>
+                        ${dDayBadge}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        const savedDate = localStorage.getItem('kairo_meet_date'); 
+        if (savedDate) { calculateDDay(savedDate); renderCalendar(); }
 
         // --- 4. 시계 ---
         function updateClock() { const now = new Date(); const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: "2-digit", minute: "2-digit" }); const dateStr = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' }); document.getElementById('top-clock').innerText = timeStr; document.getElementById('lock-clock').innerText = timeStr; document.getElementById('lock-date').innerText = dateStr; }
         setInterval(updateClock, 1000); updateClock();
 
-        // --- 5. 앨범 기능 (최신순 + 확대 + 저장) ---
+        // --- 5. 앨범 기능 ---
         function handleAddPhoto(input) {
             const file = input.files[0];
             if (!file) return;
@@ -318,10 +459,10 @@
 
         function savePhoto(imgSrc, caption) {
             const photos = JSON.parse(localStorage.getItem('kairo_user_photos')) || [];
-            photos.push({ src: imgSrc, caption: caption }); // 배열 끝에 추가 (저장은 순서대로)
+            photos.push({ src: imgSrc, caption: caption }); 
             try {
                 localStorage.setItem('kairo_user_photos', JSON.stringify(photos));
-                renderPhoto(imgSrc, caption); // 화면에는 맨 앞에 추가
+                renderPhoto(imgSrc, caption); 
             } catch (e) { alert("저장 공간이 부족합니다. 사진을 추가할 수 없습니다."); }
         }
 
@@ -329,46 +470,36 @@
             const container = document.getElementById('gallery-container');
             const div = document.createElement('div');
             div.className = 'photo';
-            // 클릭 이벤트 추가 (크게 보기)
             div.onclick = function() { openFullImage(src, caption); };
             div.innerHTML = `<img src="${src}" alt="User Photo"><div class="photo-caption">${caption}</div>`;
-            
-            // ★ 핵심: prepend를 사용하여 최신 사진을 맨 앞에 추가
             container.prepend(div);
         }
 
         function loadSavedPhotos() {
             const photos = JSON.parse(localStorage.getItem('kairo_user_photos')) || [];
-            // 저장된 순서대로 불러오되, renderPhoto가 prepend 하므로 결과적으로 최신순 정렬됨
             photos.forEach(p => renderPhoto(p.src, p.caption));
         }
         loadSavedPhotos();
 
-        // --- 6. 사진 크게 보기 & 저장 (Lightbox) ---
+        // --- 6. 이미지 모달 ---
         let currentImageSrc = "";
-        
         function openFullImage(src, caption) {
             const modal = document.getElementById('imageModal');
             document.getElementById('fullImage').src = src;
             document.getElementById('fullCaption').innerText = caption;
-            currentImageSrc = src; // 저장용 변수에 할당
+            currentImageSrc = src; 
             modal.style.display = 'flex';
         }
-
-        function closeFullImage() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-
+        function closeFullImage() { document.getElementById('imageModal').style.display = 'none'; }
         function downloadImage() {
             if(!currentImageSrc) return;
             const link = document.createElement('a');
             link.href = currentImageSrc;
-            link.download = 'Kairo_Memory_' + new Date().getTime() + '.png'; // 파일명 생성
+            link.download = 'Kairo_Memory_' + new Date().getTime() + '.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
-
     </script>
 </body>
 </html>
