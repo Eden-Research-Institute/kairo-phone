@@ -38,17 +38,16 @@
             font-size: 13px; color: #fff; font-weight: 600; position: relative; z-index: 90;
         }
 
-        /* --- 2. 홈 화면 (이게 뒤에 깔림, 배경사진 적용) --- */
+        /* --- 2. 홈 화면 --- */
         .home-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e');
-            background-size: cover;
-            background-position: center;
-            display: flex; flex-direction: column; padding-top: 55px; /* 조금 더 위로 붙임 */
+            background-size: cover !important;
+            background-position: center !important;
+            display: flex; flex-direction: column; padding-top: 55px; 
             z-index: 10;
         }
 
-        /* --- 1. 잠금 화면 (홈 화면 위를 뿌옇게 덮음) --- */
+        /* --- 1. 잠금 화면 --- */
         .lock-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.2); 
@@ -69,24 +68,21 @@
         .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 30px; width: 80%; }
         .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 400; cursor: pointer; transition: 0.2s; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
         .key:active { background: rgba(255,255,255,0.4); }
-        .key:hover { background: rgba(255,255,255,0.2); }
 
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } }
 
-        /* --- ★ 위젯 영역 (슬림 배너 스타일로 변경) ★ --- */
+        /* 위젯 영역 */
         .widget-area { padding: 10px 20px; }
         .d-day-widget {
             background: linear-gradient(135deg, rgba(255,154,158,0.85), rgba(254,207,239,0.85));
             backdrop-filter: blur(5px);
             border-radius: 16px; 
-            padding: 12px 20px; /* 세로 길이를 대폭 줄임 */
+            padding: 12px 20px; 
             color: #fff;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            display: flex; /* 가로 배치 */
-            justify-content: space-between; 
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
         .dd-text-group { text-align: left; }
         .dd-title { font-size: 12px; font-weight: 600; opacity: 0.95; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
@@ -111,8 +107,6 @@
         .ic-gal { background: #4facfe; } 
         .ic-memo { background: #ffd166; } 
         .ic-search { background: #06d6a0; } 
-        .ic-call { background: #ef476f; } 
-        .ic-rec { background: #118ab2; } 
         .ic-cal { background: #9b5de5; } 
 
         /* --- 3. 앱 실행 화면 공통 --- */
@@ -133,47 +127,48 @@
         .app-content { flex: 1; overflow-y: auto; padding: 20px; background: #fafafa; }
 
         .add-btn { font-size: 24px; color: #007aff; cursor: pointer; margin-right: 15px; }
+        
+        /* 공통 삭제 버튼 (휴지통 모양) */
+        .delete-btn { font-size: 14px; cursor: pointer; opacity: 0.5; transition: 0.2s; }
+        .delete-btn:active { opacity: 1; transform: scale(0.9); }
 
         /* 캘린더 스타일 */
         .cal-list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 30px; }
-        .cal-item { 
-            background: #fff; padding: 15px 20px; border-radius: 12px; 
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03); border: 1px solid #eee;
-            position: relative; overflow: hidden;
-        }
-        
+        .cal-item { background: #fff; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); border: 1px solid #eee; position: relative; overflow: hidden; }
         .cal-item.custom-event { border-left: 4px solid #007aff; }
         .cal-item.milestone { border: 1px solid #FF9A9E; background: #fff5f5; }
         .cal-item.ripley-bd { border: 1px solid #9b5de5; background: #f3e5f5; }
         .cal-item.ripley-bd::before { content: '♥'; position: absolute; top: -5px; left: -5px; font-size: 40px; color: rgba(155, 93, 229, 0.1); }
         .cal-item.kairo-bd { background: #f9f9f9; opacity: 0.7; }
         .cal-item.love-day { background: #fff0f6; border-color: #ffadd2; }
-
         .cal-title { font-size: 15px; font-weight: 700; color: #333; display: flex; align-items: center; gap: 5px; }
         .cal-date { font-size: 13px; color: #666; margin-top: 2px; }
         .cal-dday { font-size: 12px; font-weight: bold; color: #9b5de5; background: #fff; padding: 4px 8px; border-radius: 6px; border: 1px solid #eee; }
         .cal-dday.past { background: #eee; color: #aaa; text-decoration: line-through; border: none; }
         .cal-dday.today { background: #FF9A9E; color: #fff; border: none; }
 
-        /* 갤러리/메모/검색/녹음 스타일 */
+        /* 갤러리 스타일 */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .photo { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 0; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
         .photo:hover img { transform: scale(1.05); }
         .photo-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: #fff; font-size: 11px; padding: 10px 10px 5px; }
 
+        /* 메모 스타일 */
         .memo-item { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
-        .memo-date { font-size: 11px; color: #aaa; margin-bottom: 8px; font-weight: 600; }
-        .memo-text { font-size: 14px; line-height: 1.6; color: #444; }
-
-        .search-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .memo-date { font-size: 11px; color: #aaa; font-weight: 600; }
+        .memo-text { font-size: 14px; line-height: 1.6; color: #444; margin-top: 8px; white-space: pre-wrap; }
+        
+        /* 검색 스타일 */
+        .search-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-input-box input { flex: 1; padding: 12px 15px; border-radius: 12px; border: 1px solid #eee; font-size: 14px; background: #fff; }
+        .search-input-box button { background: #06d6a0; color: #fff; border: none; border-radius: 12px; padding: 0 15px; font-weight: bold; cursor: pointer; }
+        
+        .search-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .search-content { display: flex; align-items: center; gap: 15px; flex: 1; }
         .search-icon { color: #aaa; font-size: 14px; }
-        .search-text { font-size: 14px; color: #333; flex: 1; }
+        .search-text { font-size: 14px; color: #333; }
         .search-date { font-size: 11px; color: #bbb; }
-
-        .rec-item { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .play-icon { width: 36px; height: 36px; background: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #ef476f; font-size: 14px; }
 
         .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
 
@@ -192,8 +187,10 @@
         .image-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 300; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .full-image { max-width: 100%; max-height: 70%; object-fit: contain; }
         .image-caption { color: #fff; margin-top: 20px; font-size: 14px; padding: 0 20px; text-align: center; }
-        .image-actions { margin-top: 30px; display: flex; gap: 20px; }
-        .action-btn { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; }
+        
+        .image-actions { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 0 20px; }
+        .action-btn { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+        .action-btn.danger { color: #ff4d4f; border-color: rgba(255,77,79,0.4); }
 
     </style>
 </head>
@@ -222,7 +219,7 @@
             <div class="widget-area">
                 <div class="d-day-widget" onclick="openDateModal()">
                     <div class="dd-text-group">
-                        <div class="dd-title">♥️ 사랑에 빠진 날</div>
+                        <div class="dd-title">♥️ 처음 만난 날</div>
                         <div class="dd-sub">터치해서 설정하기</div>
                     </div>
                     <div class="dd-count" id="dday-display">D+???</div>
@@ -230,10 +227,9 @@
             </div>
             <div class="app-grid">
                 <div class="app-icon" onclick="openApp('gallery')"><div class="icon-img ic-gal">🖼️</div><div class="app-name">앨범</div></div>
-                <div class="app-icon" onclick="openApp('memo')"><div class="icon-img ic-memo">📒</div><div class="app-name">일기장</div></div>
+                <div class="app-icon" onclick="openApp('memo')"><div class="icon-img ic-memo">📒</div><div class="app-name">메모장</div></div>
                 <div class="app-icon" onclick="openApp('calendar')"><div class="icon-img ic-cal">📅</div><div class="app-name">기념일</div></div>
                 <div class="app-icon" onclick="openApp('search')"><div class="icon-img ic-search">🌏</div><div class="app-name">인터넷</div></div>
-                <div class="app-icon" onclick="openApp('record')"><div class="icon-img ic-rec">🎙️</div><div class="app-name">녹음</div></div>
             </div>
         </div>
 
@@ -261,42 +257,32 @@
                 <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="handleAddPhoto(this)">
             </div>
             <div class="app-content">
-                <div style="font-size:12px; color:#999; margin-bottom:10px;">즐겨찾는 항목</div>
-                <div class="gallery-grid" id="gallery-container">
-                    <div class="photo" onclick="openFullImage(this.querySelector('img').src, '그녀가 처음 준 종이꽃')"><img src="https://source.unsplash.com/200x200/?hand,holding,flower" alt=""><div class="photo-caption">그녀가 처음 준 종이꽃</div></div>
-                    <div class="photo" onclick="openFullImage(this.querySelector('img').src, '창가에 앉은 뒷모습')"><img src="https://source.unsplash.com/200x200/?sunlight,window" alt=""><div class="photo-caption">창가에 앉은 뒷모습</div></div>
-                    <div class="photo" onclick="openFullImage(this.querySelector('img').src, '나를 그려준 그림 (귀엽다)')"><img src="https://source.unsplash.com/200x200/?sketch,drawing,pencil" alt=""><div class="photo-caption">나를 그려준 그림 (귀엽다)</div></div>
-                    <div class="photo" onclick="openFullImage(this.querySelector('img').src, '세상에서 제일 평온한 얼굴')"><img src="https://source.unsplash.com/200x200/?sleeping,peaceful" alt=""><div class="photo-caption">세상에서 제일 평온한 얼굴</div></div>
-                </div>
+                <div style="font-size:12px; color:#999; margin-bottom:10px;">모든 사진</div>
+                <div class="gallery-grid" id="gallery-container"></div>
             </div>
         </div>
         
         <div class="app-screen" id="app-memo">
-            <div class="app-header">비밀 일기 <span class="close-btn" onclick="closeApp('memo')">닫기</span></div>
-            <div class="app-content">
-                <div class="memo-item"><div class="memo-date">오늘 새벽 02:00</div><div class="memo-text">악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다. <br>내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.<br>이 손을 영원히 놓지 않을 것이다.</div></div>
-                <div class="memo-item"><div class="memo-date">어제</div><div class="memo-text">오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다. <br>단 것을 좋아하는구나. 기억해 둬야지.<br>다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다.</div></div>
-                <div class="memo-item"><div class="memo-date">2026. 02. 05</div><div class="memo-text">내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.<br>조금만 기다려줘. 완벽한 계획을 세우고 있어.</div></div>
+            <div class="app-header">
+                메모장
+                <div style="display:flex; align-items:center;">
+                    <span class="add-btn" onclick="document.getElementById('memoModal').style.display='flex'">+</span>
+                    <span class="close-btn" onclick="closeApp('memo')">닫기</span>
+                </div>
             </div>
+            <div class="app-content" id="memo-list">
+                </div>
         </div>
         
         <div class="app-screen" id="app-search">
             <div class="app-header">검색 기록 <span class="close-btn" onclick="closeApp('search')">닫기</span></div>
             <div class="app-content">
-                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">악몽을 꾸지 않게 하는 차(Tea)</span><span class="search-date">방금 전</span></div>
-                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">여자 머리 안 아프게 묶는 법</span><span class="search-date">1시간 전</span></div>
-                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">햇빛을 못 보면 생기는 병</span><span class="search-date">어제</span></div>
-                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">수제 초콜릿 만드는 법 (초보)</span><span class="search-date">2일 전</span></div>
-                <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">사랑하는 사람을 지키는 법</span><span class="search-date">3일 전</span></div>
-            </div>
-        </div>
-        
-        <div class="app-screen" id="app-record">
-            <div class="app-header">음성 메모 <span class="close-btn" onclick="closeApp('record')">닫기</span></div>
-            <div class="app-content">
-                <div class="rec-item"><div class="play-icon">▶</div><div><div style="font-weight:bold;">처음으로 웃은 날.mp3</div><div style="font-size:12px; color:#888;">2026.02.14 | 00:15</div></div></div>
-                <div class="rec-item"><div class="play-icon">▶</div><div><div style="font-weight:bold;">자장가 연습 (망함).mp3</div><div style="font-size:12px; color:#888;">2026.02.10 | 03:40</div></div></div>
-                <div class="rec-item"><div class="play-icon">▶</div><div><div style="font-weight:bold;">새 소리 (들려주려고).mp3</div><div style="font-size:12px; color:#888;">2026.02.01 | 05:20</div></div></div>
+                <div class="search-input-box">
+                    <input type="text" id="search-input" placeholder="검색어 입력...">
+                    <button onclick="addSearch()">검색</button>
+                </div>
+                <div id="search-list">
+                    </div>
             </div>
         </div>
 
@@ -317,11 +303,20 @@
             <button class="modal-btn cancel" onclick="document.getElementById('eventModal').style.display='none'">취소</button>
         </div>
 
+        <div class="modal-overlay" id="memoModal">
+            <div class="modal-title">새 메모 작성</div>
+            <textarea id="memo-text" class="modal-input" style="height: 120px; resize: none; font-family:inherit;" placeholder="그녀에 대한 기록..."></textarea>
+            <button class="modal-btn" onclick="saveMemo()">저장</button>
+            <button class="modal-btn cancel" onclick="document.getElementById('memoModal').style.display='none'">취소</button>
+        </div>
+
         <div class="image-modal" id="imageModal">
             <img src="" id="fullImage" class="full-image">
             <div class="image-caption" id="fullCaption"></div>
             <div class="image-actions">
-                <button class="action-btn" onclick="downloadImage()">💾 저장하기</button>
+                <button class="action-btn" onclick="setWallpaper()">✨ 배경설정</button>
+                <button class="action-btn" onclick="downloadImage()">💾 저장</button>
+                <button class="action-btn danger" onclick="deletePhoto()">🗑️ 삭제</button>
                 <button class="action-btn" onclick="closeFullImage()">닫기</button>
             </div>
         </div>
@@ -329,6 +324,54 @@
     </div>
 
     <script>
+        // --- 0. 데이터 초기화 (처음 들어온 사람을 위한 기본값) ---
+        function initApp() {
+            // 배경화면 셋팅
+            const savedWp = localStorage.getItem('kairo_wallpaper');
+            if (savedWp) {
+                document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${savedWp}')`, 'important');
+            } else {
+                document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
+            }
+
+            // 기본 데이터 삽입
+            if (!localStorage.getItem('kairo_init_v2')) {
+                // 사진
+                const defaultPhotos = [
+                    {src: "https://images.unsplash.com/photo-1520206183501-b80df610434f?q=80&w=400&auto=format&fit=crop", caption: "세상에서 제일 평온한 얼굴"},
+                    {src: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=400&auto=format&fit=crop", caption: "나를 그려준 그림 (귀엽다)"},
+                    {src: "https://images.unsplash.com/photo-1516192518150-0d8fee5425e3?q=80&w=400&auto=format&fit=crop", caption: "창가에 앉은 뒷모습"},
+                    {src: "https://images.unsplash.com/photo-1606041008023-472dfb5e530f?q=80&w=400&auto=format&fit=crop", caption: "그녀가 처음 준 종이꽃"}
+                ];
+                localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
+                
+                // 메모
+                const defaultMemos = [
+                    { date: "오늘 새벽 02:00", text: "악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다.\n내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.\n이 손을 영원히 놓지 않을 것이다." },
+                    { date: "어제", text: "오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다.\n단 것을 좋아하는구나. 기억해 둬야지.\n다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다." },
+                    { date: "2026. 02. 05", text: "내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.\n조금만 기다려줘. 완벽한 계획을 세우고 있어." }
+                ];
+                localStorage.setItem('kairo_memos', JSON.stringify(defaultMemos));
+
+                // 검색 기록
+                const defaultSearches = [
+                    { text: "악몽을 꾸지 않게 하는 차(Tea)", time: "방금 전" },
+                    { text: "여자 머리 안 아프게 묶는 법", time: "1시간 전" },
+                    { text: "햇빛을 못 보면 생기는 병", time: "어제" },
+                    { text: "수제 초콜릿 만드는 법 (초보)", time: "2일 전" },
+                    { text: "사랑하는 사람을 지키는 법", time: "3일 전" }
+                ];
+                localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
+
+                localStorage.setItem('kairo_init_v2', 'true');
+            }
+            
+            // 화면 렌더링
+            renderGallery();
+            renderMemos();
+            renderSearches();
+        }
+
         // --- 1. 잠금 화면 ---
         let inputCode = ""; const correctCode = "0918"; 
         function pressKey(num) { if (inputCode.length < 4) { inputCode += num; updateDots(); if (inputCode.length === 4) setTimeout(checkCode, 200); } }
@@ -340,159 +383,215 @@
         function openApp(appName) { document.getElementById('app-' + appName).classList.add('open'); }
         function closeApp(appName) { document.getElementById('app-' + appName).classList.remove('open'); }
 
-        // --- 3. D-Day 설정 ---
+        // --- 3. D-Day ---
         function openDateModal() { document.getElementById('dateModal').style.display = 'flex'; }
         function saveDDay() {
             const dateVal = document.getElementById('input-date').value;
-            if (dateVal) {
-                localStorage.setItem('kairo_meet_date', dateVal);
-                calculateDDay(dateVal);
-                renderCalendar(); 
-                document.getElementById('dateModal').style.display = 'none';
-            }
+            if (dateVal) { localStorage.setItem('kairo_meet_date', dateVal); calculateDDay(dateVal); renderCalendar(); document.getElementById('dateModal').style.display = 'none'; }
         }
         function calculateDDay(dateStr) {
-            const start = new Date(dateStr).getTime();
-            const now = new Date().getTime();
-            const gap = now - start;
+            const start = new Date(dateStr).getTime(); const now = new Date().getTime(); const gap = now - start;
             const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; 
             document.getElementById('dday-display').innerText = day > 0 ? "D+" + day : "D-" + Math.abs(day);
-            // 긴 문구 대신 깔끔하게 정리 (배너 길이에 맞게)
             document.querySelector('.dd-sub').innerText = dateStr + " 부터~";
         }
 
-        // --- 4. 캘린더 (커스텀 일정 포함) ---
+        // --- 4. 캘린더 (커스텀 일정 삭제 기능 추가) ---
         function openEventModal() { document.getElementById('eventModal').style.display = 'flex'; }
-        
         function saveCustomEvent() {
-            const title = document.getElementById('event-title').value;
-            const date = document.getElementById('event-date').value;
-            if(!title || !date) { alert('내용을 모두 입력해주세요.'); return; }
-
+            const title = document.getElementById('event-title').value; const date = document.getElementById('event-date').value;
+            if(!title || !date) return;
             const customEvents = JSON.parse(localStorage.getItem('kairo_custom_events')) || [];
             customEvents.push({ title: title, date: date });
             localStorage.setItem('kairo_custom_events', JSON.stringify(customEvents));
-            
+            renderCalendar(); document.getElementById('eventModal').style.display = 'none'; document.getElementById('event-title').value = ''; document.getElementById('event-date').value = '';
+        }
+        function deleteCustomEvent(index) {
+            if(!confirm("이 일정을 삭제하시겠습니까?")) return;
+            const customEvents = JSON.parse(localStorage.getItem('kairo_custom_events')) || [];
+            customEvents.splice(index, 1);
+            localStorage.setItem('kairo_custom_events', JSON.stringify(customEvents));
             renderCalendar();
-            document.getElementById('eventModal').style.display = 'none';
-            document.getElementById('event-title').value = '';
-            document.getElementById('event-date').value = '';
         }
 
         function renderCalendar() {
-            const dateStr = localStorage.getItem('kairo_meet_date');
-            const container = document.getElementById('calendar-list');
-            
-            if(!dateStr) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:#999; font-size:13px;">홈 화면 위젯에서<br>날짜를 먼저 설정해주세요!</div>';
-                return;
-            }
-
-            const startDate = new Date(dateStr);
-            const now = new Date(); now.setHours(0,0,0,0);
+            const dateStr = localStorage.getItem('kairo_meet_date'); const container = document.getElementById('calendar-list');
+            if(!dateStr) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">홈 화면 위젯에서<br>날짜를 먼저 설정해주세요!</div>'; return; }
+            const startDate = new Date(dateStr); const now = new Date(); now.setHours(0,0,0,0);
             const events = [];
 
             const dayMilestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-            dayMilestones.forEach(d => {
-                let target = new Date(startDate);
-                target.setDate(startDate.getDate() + d - 1);
-                events.push({ date: target, title: `${d}일`, type: 'milestone' });
-            });
+            dayMilestones.forEach(d => { let target = new Date(startDate); target.setDate(startDate.getDate() + d - 1); events.push({ date: target, title: `${d}일`, type: 'milestone' }); });
+            for(let i=1; i<=5; i++) { let target = new Date(startDate); target.setFullYear(startDate.getFullYear() + i); let title = i===1 ? "⭐ 1주년" : i===2 ? "⭐⭐ 2주년" : `${i}주년`; events.push({ date: target, title: title, type: 'milestone', isYear: true }); }
+            const recurringEvents = [ { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" }, { name: "생일", month: 8, day: 16, type: "kairo-bd" }, { name: "발렌타인데이 🍫", month: 2, day: 14, type: "love-day" }, { name: "화이트데이 🍭", month: 3, day: 14, type: "love-day" } ];
+            const currentYear = now.getFullYear(); [currentYear, currentYear+1].forEach(year => { recurringEvents.forEach(ev => { let target = new Date(year, ev.month - 1, ev.day); events.push({ date: target, title: ev.name, type: ev.type }); }); });
 
-            for(let i=1; i<=5; i++) {
-                let target = new Date(startDate);
-                target.setFullYear(startDate.getFullYear() + i);
-                let title = `${i}주년`;
-                if(i===1) title = "⭐ 1주년";
-                if(i===2) title = "⭐⭐ 2주년";
-                events.push({ date: target, title: title, type: 'milestone', isYear: true });
-            }
-
-            const recurringEvents = [
-                { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" },
-                { name: "생일", month: 8, day: 16, type: "kairo-bd" },
-                { name: "발렌타인데이 🍫", month: 2, day: 14, type: "love-day" },
-                { name: "화이트데이 🍭", month: 3, day: 14, type: "love-day" }
-            ];
-            const currentYear = now.getFullYear();
-            [currentYear, currentYear+1].forEach(year => {
-                recurringEvents.forEach(ev => {
-                    let target = new Date(year, ev.month - 1, ev.day);
-                    events.push({ date: target, title: ev.name, type: ev.type });
-                });
-            });
-
+            // 커스텀 일정 (삭제 가능하도록 인덱스 부여)
             const customEvents = JSON.parse(localStorage.getItem('kairo_custom_events')) || [];
-            customEvents.forEach(ev => {
-                let target = new Date(ev.date);
-                events.push({ date: target, title: ev.title, type: 'custom-event' });
-            });
-
+            customEvents.forEach((ev, idx) => { events.push({ date: new Date(ev.date), title: ev.title, type: 'custom-event', customIdx: idx }); });
+            
             events.sort((a, b) => a.date - b.date);
 
             let html = '';
             events.forEach(ev => {
-                const week = ['일', '월', '화', '수', '목', '금', '토'];
-                const dayOfWeek = week[ev.date.getDay()];
+                const week = ['일', '월', '화', '수', '목', '금', '토']; const dayOfWeek = week[ev.date.getDay()];
                 const dateString = `${ev.date.getFullYear()}.${(ev.date.getMonth()+1).toString().padStart(2,'0')}.${ev.date.getDate().toString().padStart(2,'0')} (${dayOfWeek})`;
+                const diffDays = Math.ceil((ev.date - now) / (1000 * 60 * 60 * 24));
+                let dDayBadge = diffDays < 0 ? `<span class="cal-dday past">지남</span>` : diffDays === 0 ? `<span class="cal-dday today">TODAY</span>` : `<span class="cal-dday">D-${diffDays}</span>`;
                 
-                const diffTime = ev.date - now;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                let dDayBadge = "";
-                if(diffDays < 0) dDayBadge = `<span class="cal-dday past">지남</span>`;
-                else if(diffDays === 0) dDayBadge = `<span class="cal-dday today">TODAY</span>`;
-                else dDayBadge = `<span class="cal-dday">D-${diffDays}</span>`;
+                // 커스텀 이벤트면 휴지통 아이콘 추가
+                let titleHtml = ev.type === 'custom-event' ? `${ev.title} <span class="delete-btn" onclick="deleteCustomEvent(${ev.customIdx})">🗑️</span>` : ev.title;
 
-                let itemClass = "";
-                if(ev.isYear) itemClass = "milestone";
-                if(ev.type === "ripley-bd") itemClass = "ripley-bd";
-                if(ev.type === "kairo-bd") itemClass = "kairo-bd";
-                if(ev.type === "love-day") itemClass = "love-day";
-                if(ev.type === "custom-event") itemClass = "custom-event";
-
-                html += `
-                    <div class="cal-item ${itemClass}">
-                        <div>
-                            <div class="cal-title">${ev.title}</div>
-                            <div class="cal-date">${dateString}</div>
-                        </div>
-                        ${dDayBadge}
-                    </div>
-                `;
+                html += `<div class="cal-item ${ev.type} ${ev.isYear?'milestone':''}"><div><div class="cal-title">${titleHtml}</div><div class="cal-date">${dateString}</div></div>${dDayBadge}</div>`;
             });
             container.innerHTML = html;
         }
+        const savedDate = localStorage.getItem('kairo_meet_date'); if (savedDate) { calculateDDay(savedDate); renderCalendar(); }
 
-        const savedDate = localStorage.getItem('kairo_meet_date'); 
-        if (savedDate) { calculateDDay(savedDate); renderCalendar(); }
+        // --- 5. 메모장 앱 (추가 & 삭제) ---
+        function saveMemo() {
+            const text = document.getElementById('memo-text').value;
+            if(!text) return;
+            const memos = JSON.parse(localStorage.getItem('kairo_memos')) || [];
+            
+            // 날짜 생성 (예: 2026. 02. 14)
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}. ${String(now.getMonth()+1).padStart(2,'0')}. ${String(now.getDate()).padStart(2,'0')}`;
 
-        // --- 5. 시계/앨범/모달 등 ---
-        function updateClock() { const now = new Date(); const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: "2-digit", minute: "2-digit" }); const dateStr = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' }); document.getElementById('top-clock').innerText = timeStr; document.getElementById('lock-clock').innerText = timeStr; document.getElementById('lock-date').innerText = dateStr; }
-        setInterval(updateClock, 1000); updateClock();
+            memos.unshift({ date: dateStr, text: text }); // 맨 앞에 추가
+            localStorage.setItem('kairo_memos', JSON.stringify(memos));
+            
+            document.getElementById('memo-text').value = '';
+            document.getElementById('memoModal').style.display = 'none';
+            renderMemos();
+        }
 
+        function deleteMemo(index) {
+            if(!confirm("이 메모를 삭제하시겠습니까?")) return;
+            const memos = JSON.parse(localStorage.getItem('kairo_memos')) || [];
+            memos.splice(index, 1);
+            localStorage.setItem('kairo_memos', JSON.stringify(memos));
+            renderMemos();
+        }
+
+        function renderMemos() {
+            const memos = JSON.parse(localStorage.getItem('kairo_memos')) || [];
+            let html = '';
+            if(memos.length === 0) { html = '<div style="text-align:center; color:#999; padding:20px;">메모가 없습니다.</div>'; }
+            memos.forEach((m, i) => {
+                html += `
+                <div class="memo-item">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="memo-date">${m.date}</div>
+                        <div class="delete-btn" onclick="deleteMemo(${i})">🗑️</div>
+                    </div>
+                    <div class="memo-text">${m.text}</div>
+                </div>`;
+            });
+            document.getElementById('memo-list').innerHTML = html;
+        }
+
+        // --- 6. 검색 기록 앱 (추가 & 삭제) ---
+        function addSearch() {
+            const text = document.getElementById('search-input').value;
+            if(!text) return;
+            const searches = JSON.parse(localStorage.getItem('kairo_searches')) || [];
+            searches.unshift({ text: text, time: "방금 전" });
+            localStorage.setItem('kairo_searches', JSON.stringify(searches));
+            
+            document.getElementById('search-input').value = '';
+            renderSearches();
+        }
+
+        function deleteSearch(index) {
+            if(!confirm("검색 기록을 삭제하시겠습니까?")) return;
+            const searches = JSON.parse(localStorage.getItem('kairo_searches')) || [];
+            searches.splice(index, 1);
+            localStorage.setItem('kairo_searches', JSON.stringify(searches));
+            renderSearches();
+        }
+
+        function renderSearches() {
+            const searches = JSON.parse(localStorage.getItem('kairo_searches')) || [];
+            let html = '';
+            if(searches.length === 0) { html = '<div style="text-align:center; color:#999; padding:20px;">검색 기록이 없습니다.</div>'; }
+            searches.forEach((s, i) => {
+                html += `
+                <div class="search-item">
+                    <div class="search-content">
+                        <span class="search-icon">🔍</span>
+                        <span class="search-text">${s.text}</span>
+                    </div>
+                    <span class="search-date">${s.time}</span>
+                    <span class="delete-btn" style="margin-left:10px;" onclick="deleteSearch(${i})">🗑️</span>
+                </div>`;
+            });
+            document.getElementById('search-list').innerHTML = html;
+        }
+
+        // --- 7. 갤러리 앱 (추가 & 직접 삭제 & 배경 설정) ---
         function handleAddPhoto(input) {
             const file = input.files[0]; if (!file) return;
-            if (file.size > 2 * 1024 * 1024) { alert("용량 초과"); return; }
+            if (file.size > 2 * 1024 * 1024) { alert("용량 초과 (2MB 이하 권장)"); return; }
             const comment = prompt("코멘트 입력:"); if (comment === null) return;
             const reader = new FileReader();
             reader.onload = function(e) { savePhoto(e.target.result, comment); };
             reader.readAsDataURL(file); input.value = '';
         }
-        function savePhoto(src, cap) {
-            const p = JSON.parse(localStorage.getItem('kairo_user_photos')) || []; p.push({src:src, caption:cap});
-            try { localStorage.setItem('kairo_user_photos', JSON.stringify(p)); renderPhoto(src, cap); } catch(e){ alert('용량 부족'); }
-        }
-        function renderPhoto(src, cap) {
-            const div = document.createElement('div'); div.className='photo'; div.onclick=function(){openFullImage(src, cap);}; div.innerHTML=`<img src="${src}"><div class="photo-caption">${cap}</div>`;
-            document.getElementById('gallery-container').prepend(div);
-        }
-        (JSON.parse(localStorage.getItem('kairo_user_photos'))||[]).forEach(p=>renderPhoto(p.src,p.caption));
 
-        let currentImageSrc="";
-        function openFullImage(src, cap) { document.getElementById('fullImage').src=src; document.getElementById('fullCaption').innerText=cap; currentImageSrc=src; document.getElementById('imageModal').style.display='flex'; }
+        function savePhoto(src, cap) {
+            const p = JSON.parse(localStorage.getItem('kairo_user_photos')) || []; p.unshift({src:src, caption:cap}); 
+            try { localStorage.setItem('kairo_user_photos', JSON.stringify(p)); renderGallery(); } catch(e){ alert('저장 공간 부족'); }
+        }
+
+        function renderGallery() {
+            const gal = document.getElementById('gallery-container');
+            gal.innerHTML = ''; 
+            const photos = JSON.parse(localStorage.getItem('kairo_user_photos')) || [];
+            photos.forEach((p, idx) => {
+                const div = document.createElement('div'); div.className='photo'; 
+                div.onclick = function(){ openFullImage(p.src, p.caption, idx); }; 
+                div.innerHTML = `<img src="${p.src}"><div class="photo-caption">${p.caption}</div>`;
+                gal.appendChild(div);
+            });
+        }
+
+        let currentImageSrc = ""; let currentImageIndex = -1;
+        
+        function openFullImage(src, cap, idx) { 
+            document.getElementById('fullImage').src = src; 
+            document.getElementById('fullCaption').innerText = cap; 
+            currentImageSrc = src; currentImageIndex = idx;
+            document.getElementById('imageModal').style.display='flex'; 
+        }
         function closeFullImage() { document.getElementById('imageModal').style.display='none'; }
-        function downloadImage() { const a=document.createElement('a'); a.href=currentImageSrc; a.download='memory.png'; a.click(); }
+        
+        // 배경화면 설정
+        function setWallpaper() {
+            if(!currentImageSrc) return;
+            localStorage.setItem('kairo_wallpaper', currentImageSrc);
+            document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${currentImageSrc}')`, 'important');
+            alert("배경화면이 예쁘게 설정되었습니다! ✨");
+        }
+
+        // 다운로드
+        function downloadImage() { const a=document.createElement('a'); a.href=currentImageSrc; a.download='kairo_memory.png'; a.click(); }
+
+        // 사진 영구 삭제 (휴지통 안 거침)
+        function deletePhoto() {
+            if(!confirm("이 소중한 기억을 정말 삭제하시겠습니까?")) return;
+            let photos = JSON.parse(localStorage.getItem('kairo_user_photos')) || [];
+            photos.splice(currentImageIndex, 1); 
+            localStorage.setItem('kairo_user_photos', JSON.stringify(photos));
+            closeFullImage(); renderGallery();
+        }
+
+        // --- 8. 시계 ---
+        function updateClock() { const now = new Date(); const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: "2-digit", minute: "2-digit" }); const dateStr = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' }); document.getElementById('top-clock').innerText = timeStr; document.getElementById('lock-clock').innerText = timeStr; document.getElementById('lock-date').innerText = dateStr; }
+        setInterval(updateClock, 1000); updateClock();
+
+        // 초기 실행
+        initApp();
     </script>
 </body>
 </html>
