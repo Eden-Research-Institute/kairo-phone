@@ -36,6 +36,7 @@
         .status-bar {
             padding: 12px 25px; display: flex; justify-content: space-between;
             font-size: 13px; color: #fff; font-weight: 600; position: relative; z-index: 90;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* 배경이 밝아져도 상단바 글씨가 보이도록 그림자 추가 */
         }
 
         /* --- 2. 홈 화면 --- */
@@ -58,8 +59,8 @@
             transition: transform 0.4s ease-in-out;
             z-index: 50;
         }
-        .lock-time { font-size: 72px; font-weight: 200; letter-spacing: -2px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .lock-date { font-size: 18px; margin-top: -10px; font-weight: 400; margin-bottom: 40px; text-shadow: 0 1px 5px rgba(0,0,0,0.3); }
+        .lock-time { font-size: 72px; font-weight: 200; letter-spacing: -2px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .lock-date { font-size: 18px; margin-top: -10px; font-weight: 400; margin-bottom: 40px; text-shadow: 0 1px 5px rgba(0,0,0,0.5); }
 
         .passcode-dots { display: flex; gap: 15px; margin-bottom: 40px; }
         .dot { width: 12px; height: 12px; border: 1px solid #fff; border-radius: 50%; transition: 0.2s; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
@@ -102,7 +103,7 @@
             font-size: 26px; color: #fff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .app-name { font-size: 11px; color: #fff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .app-name { font-size: 11px; color: #fff; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.9); } /* 텍스트 그림자 강화 */
 
         .ic-gal { background: #4facfe; } 
         .ic-memo { background: #ffd166; } 
@@ -161,8 +162,6 @@
         .search-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .search-input-box input { flex: 1; padding: 12px 15px; border-radius: 12px; border: 1px solid #eee; font-size: 14px; background: #fff; }
         .search-input-box button { background: #06d6a0; color: #fff; border: none; border-radius: 12px; padding: 0 15px; font-weight: bold; cursor: pointer; }
-        
-        /* ★ 검색 기록 날짜 삭제 반영 ★ */
         .search-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
         .search-content { display: flex; align-items: center; gap: 15px; flex: 1; }
         .search-icon { color: #aaa; font-size: 14px; }
@@ -356,13 +355,14 @@
         // --- 0. 데이터 초기화 ---
         function initApp() {
             const savedWp = localStorage.getItem('kairo_wallpaper');
+            
+            // ★ 수정: rgba(0,0,0, 0.4~0.6)을 rgba(0,0,0, 0.1~0.2)로 변경하여 엄청 화사하게 만듦 ★
             if (savedWp) {
-                document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${savedWp}')`, 'important');
+                document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${savedWp}')`, 'important');
             } else {
-                document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
+                document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 9 (kairo_init_v9): 메모 날짜 제거, 검색 날짜 제거, 새 내용 반영 ★
             if (!localStorage.getItem('kairo_init_v9')) {
                 
                 const defaultPhotos = [
@@ -382,7 +382,6 @@
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
-                // ★ 기본 메모에선 date를 빈 문자열("")로 처리하여 날짜가 안 보이게 함 ★
                 const defaultMemos = [
                     { date: "", text: "[수제 초콜릿 템퍼링 작업 데이터]\n- 다크 초콜릿 (카카오 65% 이상) 온도 기준\n1. 용해: 45~50℃\n2. 냉각: 27℃ (안정적인 결정화 시작점)\n3. 보온: 31~32℃\n*주의사항: 습도 45% 이하 철저 통제. 1도 오차도 불허." },
                     { date: "", text: "[은방울꽃 Lily of the valley 커스텀 오더]\n- 쇼메 (Chaumet): 비스포크 보류\n- VVIP 전용 공방 'L': 플래티넘 베이스 + VVS1 등급 다이아몬드 세팅.\n*결론: 개인 공방 진행. 비용 두 배 지불하고 일정 앞당길 것." },
@@ -391,7 +390,6 @@
                 ];
                 localStorage.setItem('kairo_memos', JSON.stringify(defaultMemos));
 
-                // 검색 기록 (날짜 데이터 삭제됨)
                 const defaultSearches = [
                     { text: "사랑해" },
                     { text: "프러포즈 장소 추천" },
@@ -401,7 +399,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v9', 'true'); // V9 도장 쾅!
+                localStorage.setItem('kairo_init_v9', 'true'); 
             }
             
             renderGallery();
@@ -483,13 +481,12 @@
         }
         const savedDate = localStorage.getItem('kairo_meet_date'); if (savedDate) { calculateDDay(savedDate); renderCalendar(); }
 
-        // --- 5. 메모장 (날짜 제거 로직 반영) ---
+        // --- 5. 메모장 ---
         function saveMemo() {
             const text = document.getElementById('memo-text').value;
             if(!text) return;
             const memos = JSON.parse(localStorage.getItem('kairo_memos')) || [];
             
-            // 새로 추가하는 메모에만 날짜 부여
             const now = new Date();
             const dateStr = `${now.getFullYear()}. ${String(now.getMonth()+1).padStart(2,'0')}. ${String(now.getDate()).padStart(2,'0')}`;
             
@@ -511,7 +508,6 @@
             let html = '';
             if(memos.length === 0) { html = '<div style="text-align:center; color:#999; padding:20px;">메모가 없습니다.</div>'; }
             memos.forEach((m, i) => {
-                // 날짜가 빈 문자열("")이면 아예 출력 안 함
                 const dateHtml = m.date ? `<div class="memo-date">${m.date}</div>` : '';
                 html += `
                 <div class="memo-item">
@@ -525,13 +521,12 @@
             document.getElementById('memo-list').innerHTML = html;
         }
 
-        // --- 6. 검색 기록 (날짜 완전 제거) ---
+        // --- 6. 검색 기록 ---
         function addSearch() {
             const text = document.getElementById('search-input').value;
             if(!text) return;
             const searches = JSON.parse(localStorage.getItem('kairo_searches')) || [];
             
-            // 추가할 때도 날짜 저장 안 함
             searches.unshift({ text: text });
             localStorage.setItem('kairo_searches', JSON.stringify(searches));
             document.getElementById('search-input').value = '';
@@ -594,10 +589,11 @@
         }
         function closeFullImage() { document.getElementById('imageModal').style.display='none'; }
         
+        // ★ 여기서도 배경 밝기 수정 (0.1 ~ 0.2) 적용 ★
         function setWallpaper() {
             if(!currentImageSrc) return;
             localStorage.setItem('kairo_wallpaper', currentImageSrc);
-            document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${currentImageSrc}')`, 'important');
+            document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${currentImageSrc}')`, 'important');
             alert("배경화면이 예쁘게 설정되었습니다! ✨");
         }
         function downloadImage() { const a=document.createElement('a'); a.href=currentImageSrc; a.download='kairo_memory.png'; a.click(); }
