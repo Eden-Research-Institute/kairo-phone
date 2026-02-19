@@ -36,7 +36,7 @@
         .status-bar {
             padding: 12px 25px; display: flex; justify-content: space-between;
             font-size: 13px; color: #fff; font-weight: 600; position: relative; z-index: 90;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* 배경이 밝아져도 상단바 글씨가 보이도록 그림자 추가 */
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
 
         /* --- 2. 홈 화면 --- */
@@ -103,7 +103,7 @@
             font-size: 26px; color: #fff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .app-name { font-size: 11px; color: #fff; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.9); } /* 텍스트 그림자 강화 */
+        .app-name { font-size: 11px; color: #fff; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
 
         .ic-gal { background: #4facfe; } 
         .ic-memo { background: #ffd166; } 
@@ -334,7 +334,7 @@
 
         <div class="modal-overlay" id="memoModal">
             <div class="modal-title">새 메모 작성</div>
-            <textarea id="memo-text" class="modal-input" style="height: 120px; resize: none; font-family:inherit;" placeholder="그녀에 대한 기록..."></textarea>
+            <textarea id="memo-text" class="modal-input" style="height: 120px; resize: none; font-family:inherit;" placeholder="내용 입력..."></textarea>
             <button class="modal-btn" onclick="saveMemo()">저장</button>
             <button class="modal-btn cancel" onclick="document.getElementById('memoModal').style.display='none'">취소</button>
         </div>
@@ -352,11 +352,9 @@
     </div>
 
     <script>
-        // --- 0. 데이터 초기화 ---
         function initApp() {
             const savedWp = localStorage.getItem('kairo_wallpaper');
             
-            // ★ 수정: rgba(0,0,0, 0.4~0.6)을 rgba(0,0,0, 0.1~0.2)로 변경하여 엄청 화사하게 만듦 ★
             if (savedWp) {
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${savedWp}')`, 'important');
             } else {
@@ -589,7 +587,6 @@
         }
         function closeFullImage() { document.getElementById('imageModal').style.display='none'; }
         
-        // ★ 여기서도 배경 밝기 수정 (0.1 ~ 0.2) 적용 ★
         function setWallpaper() {
             if(!currentImageSrc) return;
             localStorage.setItem('kairo_wallpaper', currentImageSrc);
