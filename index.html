@@ -146,7 +146,7 @@
         .cal-dday.past { background: #eee; color: #aaa; text-decoration: line-through; border: none; }
         .cal-dday.today { background: #FF9A9E; color: #fff; border: none; }
 
-        /* 갤러리 스타일 (코멘트 디자인 삭제됨) */
+        /* 갤러리 스타일 */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .photo { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 0; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
@@ -322,16 +322,14 @@
             if (savedWp) {
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${savedWp}')`, 'important');
             } else {
-                // 기본 배경화면 (3번째 사진)
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 4 (kairo_init_v4): 13장 사진 기본 로드 ★
-            if (!localStorage.getItem('kairo_init_v4')) {
+            // ★ 버전 5 (kairo_init_v5): 에덴 접속 힌트 추가 적용 ★
+            if (!localStorage.getItem('kairo_init_v5')) {
                 
-                // 최신 사진이 0번 인덱스로 오게 역순으로 배열 작성
                 const defaultPhotos = [
-                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, // 가장 최신
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/bb496573-be95-4f33-bdb2-fbd1cc20a863?v=4707ea"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/eb1e6577-841e-4fa2-a160-b9e78e317fe9?v=53a9b6"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/8687824f-c6d3-4d6c-9333-37fc37fd1719?v=326801"},
@@ -343,14 +341,16 @@
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/5f0bbb35-51f0-4beb-acbb-95a2b542b258?v=6a8000"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/b6cbce53-4d46-4a2f-9d8b-92f19985a2c0?v=96c701"},
-                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7642d884-94fe-4413-9a16-5568d7186ab3?v=b17834"} // 가장 오래된 사진
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7642d884-94fe-4413-9a16-5568d7186ab3?v=b17834"} 
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
+                // 에덴 힌트가 포함된 메모 업데이트
                 const defaultMemos = [
                     { date: "오늘 새벽 02:00", text: "악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다.\n내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.\n이 손을 영원히 놓지 않을 것이다." },
                     { date: "어제", text: "오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다.\n단 것을 좋아하는구나. 기억해 둬야지.\n다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다." },
-                    { date: "2026. 02. 05", text: "내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.\n조금만 기다려줘. 완벽한 계획을 세우고 있어." }
+                    { date: "2026. 02. 05", text: "내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.\n조금만 기다려줘. 완벽한 계획을 세우고 있어." },
+                    { date: "2025. 12. 31", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일\n\n다시는 이곳에 접속할 일이 없어야 한다." }
                 ];
                 localStorage.setItem('kairo_memos', JSON.stringify(defaultMemos));
 
@@ -363,7 +363,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v4', 'true'); // V4 도장 쾅!
+                localStorage.setItem('kairo_init_v5', 'true'); // V5 도장 쾅!
             }
             
             renderGallery();
@@ -522,7 +522,6 @@
             const file = input.files[0]; if (!file) return;
             if (file.size > 2 * 1024 * 1024) { alert("용량 초과 (2MB 이하 권장)"); return; }
             
-            // 코멘트 없이 사진만 바로 저장
             const reader = new FileReader();
             reader.onload = function(e) { savePhoto(e.target.result); };
             reader.readAsDataURL(file); input.value = '';
