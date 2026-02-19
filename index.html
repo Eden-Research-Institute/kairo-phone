@@ -38,22 +38,21 @@
             font-size: 13px; color: #fff; font-weight: 600; position: relative; z-index: 90;
         }
 
-        /* --- 2. 홈 화면 (이게 뒤에 깔림) --- */
+        /* --- 2. 홈 화면 (이게 뒤에 깔림, 배경사진 적용) --- */
         .home-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* 소장님이 주신 리플리 사진 적용 (앱이 잘 보이게 살짝 어둡게) */
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e');
             background-size: cover;
             background-position: center;
-            display: flex; flex-direction: column; padding-top: 60px;
+            display: flex; flex-direction: column; padding-top: 55px; /* 조금 더 위로 붙임 */
             z-index: 10;
         }
 
-        /* --- 1. 잠금 화면 (홈 화면 위를 덮으면서 뿌옇게 만듦) --- */
+        /* --- 1. 잠금 화면 (홈 화면 위를 뿌옇게 덮음) --- */
         .lock-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.2); /* 반투명 검은 필터 */
-            backdrop-filter: blur(15px); /* ★ 핵심: 뒤에 있는 사진을 강하게 흐리게 만듦 */
+            background: rgba(0,0,0,0.2); 
+            backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
             display: flex; flex-direction: column; align-items: center; padding-top: 80px;
             color: #fff;
@@ -75,20 +74,26 @@
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
 
-        /* 위젯 및 아이콘 */
-        .widget-area { padding: 20px; }
+        /* --- ★ 위젯 영역 (슬림 배너 스타일로 변경) ★ --- */
+        .widget-area { padding: 10px 20px; }
         .d-day-widget {
-            background: linear-gradient(135deg, rgba(255,154,158,0.8), rgba(254,207,239,0.8));
+            background: linear-gradient(135deg, rgba(255,154,158,0.85), rgba(254,207,239,0.85));
             backdrop-filter: blur(5px);
-            border-radius: 20px; padding: 25px; color: #fff;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            border-radius: 16px; 
+            padding: 12px 20px; /* 세로 길이를 대폭 줄임 */
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            display: flex; /* 가로 배치 */
+            justify-content: space-between; 
+            align-items: center;
         }
-        .dd-title { font-size: 13px; font-weight: 600; opacity: 0.9; }
-        .dd-count { font-size: 36px; font-weight: 800; margin: 5px 0; }
-        .dd-sub { font-size: 12px; text-align: right; opacity: 0.8; font-weight: 500;}
+        .dd-text-group { text-align: left; }
+        .dd-title { font-size: 12px; font-weight: 600; opacity: 0.95; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .dd-sub { font-size: 10px; opacity: 0.85; font-weight: 500;}
+        .dd-count { font-size: 26px; font-weight: 800; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
 
+        /* 하단 앱 아이콘 */
         .app-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 10px;
             padding: 20px; margin-top: auto; margin-bottom: 30px;
@@ -110,7 +115,7 @@
         .ic-rec { background: #118ab2; } 
         .ic-cal { background: #9b5de5; } 
 
-        /* --- 3. 앱 실행 화면 --- */
+        /* --- 3. 앱 실행 화면 공통 --- */
         .app-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #fff; z-index: 20;
@@ -172,7 +177,7 @@
 
         .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
 
-        /* 모달들 (공통 스타일) */
+        /* 모달 (팝업창) */
         .modal-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.8); z-index: 200; display: none; 
@@ -216,9 +221,11 @@
         <div class="home-screen">
             <div class="widget-area">
                 <div class="d-day-widget" onclick="openDateModal()">
-                    <div class="dd-title">♥️</div>
-                    <div class="dd-count" id="dday-display">D + ???</div>
-                    <div class="dd-sub">터치해서 날짜 설정하기</div>
+                    <div class="dd-text-group">
+                        <div class="dd-title">♥️ 처음 만난 날</div>
+                        <div class="dd-sub">터치해서 설정하기</div>
+                    </div>
+                    <div class="dd-count" id="dday-display">D+???</div>
                 </div>
             </div>
             <div class="app-grid">
@@ -239,11 +246,8 @@
                 </div>
             </div>
             <div class="app-content">
-                <div style="font-size:12px; color:#999; margin-bottom:15px; text-align:center;">
-                    우리의 소중한 날들
-                </div>
-                <div class="cal-list" id="calendar-list">
-                    </div>
+                <div style="font-size:12px; color:#999; margin-bottom:15px; text-align:center;">우리의 소중한 날들</div>
+                <div class="cal-list" id="calendar-list"></div>
             </div>
         </div>
 
@@ -352,8 +356,9 @@
             const now = new Date().getTime();
             const gap = now - start;
             const day = Math.floor(gap / (1000 * 60 * 60 * 24)) + 1; 
-            document.getElementById('dday-display').innerText = day > 0 ? "D + " + day : "D - " + Math.abs(day);
-            document.querySelector('.dd-sub').innerText = dateStr + " 부터 사랑하는 중";
+            document.getElementById('dday-display').innerText = day > 0 ? "D+" + day : "D-" + Math.abs(day);
+            // 긴 문구 대신 깔끔하게 정리 (배너 길이에 맞게)
+            document.querySelector('.dd-sub').innerText = dateStr + " 부터~";
         }
 
         // --- 4. 캘린더 (커스텀 일정 포함) ---
@@ -387,7 +392,6 @@
             const now = new Date(); now.setHours(0,0,0,0);
             const events = [];
 
-            // A. 자동 생성 기념일
             const dayMilestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
             dayMilestones.forEach(d => {
                 let target = new Date(startDate);
@@ -395,7 +399,6 @@
                 events.push({ date: target, title: `${d}일`, type: 'milestone' });
             });
 
-            // B. 주년
             for(let i=1; i<=5; i++) {
                 let target = new Date(startDate);
                 target.setFullYear(startDate.getFullYear() + i);
@@ -405,7 +408,6 @@
                 events.push({ date: target, title: title, type: 'milestone', isYear: true });
             }
 
-            // C. 반복 기념일
             const recurringEvents = [
                 { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" },
                 { name: "생일", month: 8, day: 16, type: "kairo-bd" },
@@ -420,17 +422,14 @@
                 });
             });
 
-            // D. 사용자 추가 커스텀 일정
             const customEvents = JSON.parse(localStorage.getItem('kairo_custom_events')) || [];
             customEvents.forEach(ev => {
                 let target = new Date(ev.date);
                 events.push({ date: target, title: ev.title, type: 'custom-event' });
             });
 
-            // 정렬
             events.sort((a, b) => a.date - b.date);
 
-            // 렌더링
             let html = '';
             events.forEach(ev => {
                 const week = ['일', '월', '화', '수', '목', '금', '토'];
