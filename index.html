@@ -155,7 +155,7 @@
         /* 메모 스타일 */
         .memo-item { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
         .memo-date { font-size: 11px; color: #aaa; font-weight: 600; }
-        .memo-text { font-size: 14px; line-height: 1.6; color: #444; margin-top: 8px; white-space: pre-wrap; }
+        .memo-text { font-size: 14px; line-height: 1.6; color: #444; margin-top: 8px; white-space: pre-wrap; word-break: break-all; }
         
         /* 검색 스타일 */
         .search-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -166,6 +166,20 @@
         .search-icon { color: #aaa; font-size: 14px; }
         .search-text { font-size: 14px; color: #333; }
         .search-date { font-size: 11px; color: #bbb; }
+
+        /* 보안 즐겨찾기 스타일 (NEW) */
+        .secure-bookmark {
+            margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 20px; padding-bottom: 30px;
+        }
+        .sb-title { font-size: 12px; color: #999; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        .sb-card {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #222; color: #fff; padding: 15px; border-radius: 12px; 
+            text-decoration: none; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .sb-card:active { transform: scale(0.98); }
+        .sb-name { font-weight: bold; font-size: 14px; letter-spacing: 0.5px; }
+        .sb-desc { font-size: 11px; color: #ff4d4f; margin-top: 4px; opacity: 0.9; }
 
         .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
 
@@ -275,7 +289,20 @@
                     <input type="text" id="search-input" placeholder="검색어 입력...">
                     <button onclick="addSearch()">검색</button>
                 </div>
+                
                 <div id="search-list"></div>
+
+                <div class="secure-bookmark">
+                    <div class="sb-title">🔒 보안 즐겨찾기 (IP 우회 적용)</div>
+                    <a href="https://eden-research-institute.github.io/eden-system/" target="_blank" class="sb-card">
+                        <div>
+                            <div class="sb-name">EDEN Research System</div>
+                            <div class="sb-desc">⚠️ Top Secret / 접속 주의</div>
+                        </div>
+                        <div style="font-size: 20px;">🌐</div>
+                    </a>
+                </div>
+
             </div>
         </div>
 
@@ -325,8 +352,8 @@
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 5 (kairo_init_v5): 에덴 접속 힌트 추가 적용 ★
-            if (!localStorage.getItem('kairo_init_v5')) {
+            // ★ 버전 6 (kairo_init_v6): 메모 내용 수정 적용 ★
+            if (!localStorage.getItem('kairo_init_v6')) {
                 
                 const defaultPhotos = [
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
@@ -345,12 +372,12 @@
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
-                // 에덴 힌트가 포함된 메모 업데이트
+                // 마지막 줄이 삭제된 메모 셋팅
                 const defaultMemos = [
                     { date: "오늘 새벽 02:00", text: "악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다.\n내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.\n이 손을 영원히 놓지 않을 것이다." },
                     { date: "어제", text: "오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다.\n단 것을 좋아하는구나. 기억해 둬야지.\n다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다." },
                     { date: "2026. 02. 05", text: "내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.\n조금만 기다려줘. 완벽한 계획을 세우고 있어." },
-                    { date: "2025. 12. 31", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일\n\n다시는 이곳에 접속할 일이 없어야 한다." }
+                    { date: "2025. 12. 31", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일" }
                 ];
                 localStorage.setItem('kairo_memos', JSON.stringify(defaultMemos));
 
@@ -363,7 +390,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v5', 'true'); // V5 도장 쾅!
+                localStorage.setItem('kairo_init_v6', 'true'); // V6 도장 쾅!
             }
             
             renderGallery();
