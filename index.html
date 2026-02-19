@@ -38,44 +38,50 @@
             font-size: 13px; color: #fff; font-weight: 600; position: relative; z-index: 90;
         }
 
-        /* --- 1. 잠금 화면 --- */
+        /* --- 2. 홈 화면 (이게 뒤에 깔림) --- */
+        .home-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* 소장님이 주신 리플리 사진 적용 (앱이 잘 보이게 살짝 어둡게) */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e');
+            background-size: cover;
+            background-position: center;
+            display: flex; flex-direction: column; padding-top: 60px;
+            z-index: 10;
+        }
+
+        /* --- 1. 잠금 화면 (홈 화면 위를 덮으면서 뿌옇게 만듦) --- */
         .lock-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/360x740/?pastel,sky');
-            background-size: cover;
+            background: rgba(0,0,0,0.2); /* 반투명 검은 필터 */
+            backdrop-filter: blur(15px); /* ★ 핵심: 뒤에 있는 사진을 강하게 흐리게 만듦 */
+            -webkit-backdrop-filter: blur(15px);
             display: flex; flex-direction: column; align-items: center; padding-top: 80px;
-            color: #fff; backdrop-filter: blur(5px);
+            color: #fff;
             transition: transform 0.4s ease-in-out;
             z-index: 50;
         }
-        .lock-time { font-size: 72px; font-weight: 200; letter-spacing: -2px; }
-        .lock-date { font-size: 18px; margin-top: -10px; font-weight: 400; margin-bottom: 40px; }
+        .lock-time { font-size: 72px; font-weight: 200; letter-spacing: -2px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .lock-date { font-size: 18px; margin-top: -10px; font-weight: 400; margin-bottom: 40px; text-shadow: 0 1px 5px rgba(0,0,0,0.3); }
 
         .passcode-dots { display: flex; gap: 15px; margin-bottom: 40px; }
-        .dot { width: 12px; height: 12px; border: 1px solid #fff; border-radius: 50%; transition: 0.2s; }
+        .dot { width: 12px; height: 12px; border: 1px solid #fff; border-radius: 50%; transition: 0.2s; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
         .dot.filled { background: #fff; }
 
         .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 30px; width: 80%; }
-        .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 400; cursor: pointer; transition: 0.2s; }
+        .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 400; cursor: pointer; transition: 0.2s; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
         .key:active { background: rgba(255,255,255,0.4); }
         .key:hover { background: rgba(255,255,255,0.2); }
 
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
 
-        /* --- 2. 홈 화면 --- */
-        .home-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #1a1a1a;
-            display: flex; flex-direction: column; padding-top: 60px;
-            z-index: 10;
-        }
-        
+        /* 위젯 및 아이콘 */
         .widget-area { padding: 20px; }
         .d-day-widget {
-            background: linear-gradient(135deg, #FF9A9E, #FECFEF);
+            background: linear-gradient(135deg, rgba(255,154,158,0.8), rgba(254,207,239,0.8));
+            backdrop-filter: blur(5px);
             border-radius: 20px; padding: 25px; color: #fff;
-            box-shadow: 0 10px 20px rgba(255, 154, 158, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
             cursor: pointer;
         }
@@ -95,7 +101,7 @@
             font-size: 26px; color: #fff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .app-name { font-size: 11px; color: #fff; font-weight: 500; }
+        .app-name { font-size: 11px; color: #fff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
         .ic-gal { background: #4facfe; } 
         .ic-memo { background: #ffd166; } 
@@ -132,9 +138,7 @@
             position: relative; overflow: hidden;
         }
         
-        /* 커스텀 일정 (사용자 추가) */
         .cal-item.custom-event { border-left: 4px solid #007aff; }
-
         .cal-item.milestone { border: 1px solid #FF9A9E; background: #fff5f5; }
         .cal-item.ripley-bd { border: 1px solid #9b5de5; background: #f3e5f5; }
         .cal-item.ripley-bd::before { content: '♥'; position: absolute; top: -5px; left: -5px; font-size: 40px; color: rgba(155, 93, 229, 0.1); }
@@ -262,6 +266,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="app-screen" id="app-memo">
             <div class="app-header">비밀 일기 <span class="close-btn" onclick="closeApp('memo')">닫기</span></div>
             <div class="app-content">
@@ -270,6 +275,7 @@
                 <div class="memo-item"><div class="memo-date">2026. 02. 05</div><div class="memo-text">내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.<br>조금만 기다려줘. 완벽한 계획을 세우고 있어.</div></div>
             </div>
         </div>
+        
         <div class="app-screen" id="app-search">
             <div class="app-header">검색 기록 <span class="close-btn" onclick="closeApp('search')">닫기</span></div>
             <div class="app-content">
@@ -280,6 +286,7 @@
                 <div class="search-item"><span class="search-icon">🔍</span><span class="search-text">사랑하는 사람을 지키는 법</span><span class="search-date">3일 전</span></div>
             </div>
         </div>
+        
         <div class="app-screen" id="app-record">
             <div class="app-header">음성 메모 <span class="close-btn" onclick="closeApp('record')">닫기</span></div>
             <div class="app-content">
@@ -380,7 +387,7 @@
             const now = new Date(); now.setHours(0,0,0,0);
             const events = [];
 
-            // A. 자동 생성 기념일 (100일, 200일...)
+            // A. 자동 생성 기념일
             const dayMilestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
             dayMilestones.forEach(d => {
                 let target = new Date(startDate);
@@ -398,7 +405,7 @@
                 events.push({ date: target, title: title, type: 'milestone', isYear: true });
             }
 
-            // C. 반복 기념일 (생일 등)
+            // C. 반복 기념일
             const recurringEvents = [
                 { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" },
                 { name: "생일", month: 8, day: 16, type: "kairo-bd" },
@@ -413,7 +420,7 @@
                 });
             });
 
-            // D. ★ 사용자 추가 커스텀 일정 ★
+            // D. 사용자 추가 커스텀 일정
             const customEvents = JSON.parse(localStorage.getItem('kairo_custom_events')) || [];
             customEvents.forEach(ev => {
                 let target = new Date(ev.date);
@@ -461,7 +468,7 @@
         const savedDate = localStorage.getItem('kairo_meet_date'); 
         if (savedDate) { calculateDDay(savedDate); renderCalendar(); }
 
-        // --- 5. 시계/앨범/모달 등 (기존 동일) ---
+        // --- 5. 시계/앨범/모달 등 ---
         function updateClock() { const now = new Date(); const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: "2-digit", minute: "2-digit" }); const dateStr = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' }); document.getElementById('top-clock').innerText = timeStr; document.getElementById('lock-clock').innerText = timeStr; document.getElementById('lock-date').innerText = dateStr; }
         setInterval(updateClock, 1000); updateClock();
 
