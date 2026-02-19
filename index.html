@@ -154,20 +154,21 @@
 
         /* 메모 스타일 */
         .memo-item { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
-        .memo-date { font-size: 11px; color: #aaa; font-weight: 600; }
-        .memo-text { font-size: 14px; line-height: 1.6; color: #444; margin-top: 8px; white-space: pre-wrap; word-break: break-all; }
+        .memo-date { font-size: 11px; color: #aaa; font-weight: 600; margin-bottom: 5px; }
+        .memo-text { font-size: 14px; line-height: 1.6; color: #444; white-space: pre-wrap; word-break: break-all; }
         
         /* 검색 스타일 */
         .search-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .search-input-box input { flex: 1; padding: 12px 15px; border-radius: 12px; border: 1px solid #eee; font-size: 14px; background: #fff; }
         .search-input-box button { background: #06d6a0; color: #fff; border: none; border-radius: 12px; padding: 0 15px; font-weight: bold; cursor: pointer; }
+        
+        /* ★ 검색 기록 날짜 삭제 반영 ★ */
         .search-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
         .search-content { display: flex; align-items: center; gap: 15px; flex: 1; }
         .search-icon { color: #aaa; font-size: 14px; }
         .search-text { font-size: 14px; color: #333; }
-        .search-date { font-size: 11px; color: #bbb; }
 
-        /* 보안 즐겨찾기 스타일 (NEW) */
+        /* 보안 즐겨찾기 스타일 */
         .secure-bookmark {
             margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 20px; padding-bottom: 30px;
         }
@@ -361,8 +362,8 @@
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 8 (kairo_init_v8): 확실한 데이터 갱신을 위해 도장 버전 올림 ★
-            if (!localStorage.getItem('kairo_init_v8')) {
+            // ★ 버전 9 (kairo_init_v9): 메모 날짜 제거, 검색 날짜 제거, 새 내용 반영 ★
+            if (!localStorage.getItem('kairo_init_v9')) {
                 
                 const defaultPhotos = [
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
@@ -381,25 +382,26 @@
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
-                // (6자리) 텍스트가 확실히 들어간 메모
+                // ★ 기본 메모에선 date를 빈 문자열("")로 처리하여 날짜가 안 보이게 함 ★
                 const defaultMemos = [
-                    { date: "오늘 새벽 02:00", text: "악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다.\n내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.\n이 손을 영원히 놓지 않을 것이다." },
-                    { date: "어제", text: "오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다.\n단 것을 좋아하는구나. 기억해 둬야지.\n다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다." },
-                    { date: "2026. 02. 05", text: "내가 지은 죄를 씻을 수 있는 유일한 방법은 너를 여기서 데리고 나가는 것뿐이다.\n조금만 기다려줘. 완벽한 계획을 세우고 있어." },
-                    { date: "2025. 12. 31", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일 (6자리)" }
+                    { date: "", text: "[수제 초콜릿 템퍼링 작업 데이터]\n- 다크 초콜릿 (카카오 65% 이상) 온도 기준\n1. 용해: 45~50℃\n2. 냉각: 27℃ (안정적인 결정화 시작점)\n3. 보온: 31~32℃\n*주의사항: 습도 45% 이하 철저 통제. 1도 오차도 불허." },
+                    { date: "", text: "[은방울꽃 Lily of the valley 커스텀 오더]\n- 쇼메 (Chaumet): 비스포크 보류\n- VVIP 전용 공방 'L': 플래티넘 베이스 + VVS1 등급 다이아몬드 세팅.\n*결론: 개인 공방 진행. 비용 두 배 지불하고 일정 앞당길 것." },
+                    { date: "", text: "[예약 및 구매 리스트]\n- 향수: 크리드 실버 마운틴 워터 (시트러스/머스크. 타겟의 후각적 거부감이 가장 적은 데이터 확인.)\n- 장소: N타워 프라이빗 라운지 (외부인 100% 통제 가능. 18일 대관 완료)" },
+                    { date: "", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일 (6자리)" }
                 ];
                 localStorage.setItem('kairo_memos', JSON.stringify(defaultMemos));
 
+                // 검색 기록 (날짜 데이터 삭제됨)
                 const defaultSearches = [
-                    { text: "사랑해", time: "방금 전" },
-                    { text: "프러포즈 장소 추천", time: "3일 전" },
-                    { text: "여자들이 좋아하는 남자 향수", time: "12일 전" },
-                    { text: "수제 초콜릿 만드는 법", time: "24일 전" },
-                    { text: "은방울꽃 귀걸이", time: "30일 전" }
+                    { text: "사랑해" },
+                    { text: "프러포즈 장소 추천" },
+                    { text: "여자들이 좋아하는 남자 향수" },
+                    { text: "수제 초콜릿 만드는 법" },
+                    { text: "은방울꽃 귀걸이" }
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v8', 'true'); // V8 도장 쾅!
+                localStorage.setItem('kairo_init_v9', 'true'); // V9 도장 쾅!
             }
             
             renderGallery();
@@ -481,13 +483,16 @@
         }
         const savedDate = localStorage.getItem('kairo_meet_date'); if (savedDate) { calculateDDay(savedDate); renderCalendar(); }
 
-        // --- 5. 메모장 ---
+        // --- 5. 메모장 (날짜 제거 로직 반영) ---
         function saveMemo() {
             const text = document.getElementById('memo-text').value;
             if(!text) return;
             const memos = JSON.parse(localStorage.getItem('kairo_memos')) || [];
+            
+            // 새로 추가하는 메모에만 날짜 부여
             const now = new Date();
             const dateStr = `${now.getFullYear()}. ${String(now.getMonth()+1).padStart(2,'0')}. ${String(now.getDate()).padStart(2,'0')}`;
+            
             memos.unshift({ date: dateStr, text: text });
             localStorage.setItem('kairo_memos', JSON.stringify(memos));
             document.getElementById('memo-text').value = '';
@@ -506,11 +511,13 @@
             let html = '';
             if(memos.length === 0) { html = '<div style="text-align:center; color:#999; padding:20px;">메모가 없습니다.</div>'; }
             memos.forEach((m, i) => {
+                // 날짜가 빈 문자열("")이면 아예 출력 안 함
+                const dateHtml = m.date ? `<div class="memo-date">${m.date}</div>` : '';
                 html += `
                 <div class="memo-item">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div class="memo-date">${m.date}</div>
-                        <div class="delete-btn" onclick="deleteMemo(${i})">🗑️</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: ${m.date ? '5px' : '0'};">
+                        ${dateHtml}
+                        <div class="delete-btn" style="margin-left:auto;" onclick="deleteMemo(${i})">🗑️</div>
                     </div>
                     <div class="memo-text">${m.text}</div>
                 </div>`;
@@ -518,12 +525,14 @@
             document.getElementById('memo-list').innerHTML = html;
         }
 
-        // --- 6. 검색 기록 ---
+        // --- 6. 검색 기록 (날짜 완전 제거) ---
         function addSearch() {
             const text = document.getElementById('search-input').value;
             if(!text) return;
             const searches = JSON.parse(localStorage.getItem('kairo_searches')) || [];
-            searches.unshift({ text: text, time: "방금 전" });
+            
+            // 추가할 때도 날짜 저장 안 함
+            searches.unshift({ text: text });
             localStorage.setItem('kairo_searches', JSON.stringify(searches));
             document.getElementById('search-input').value = '';
             renderSearches();
@@ -546,7 +555,6 @@
                         <span class="search-icon">🔍</span>
                         <span class="search-text">${s.text}</span>
                     </div>
-                    <span class="search-date">${s.time}</span>
                     <span class="delete-btn" style="margin-left:10px;" onclick="deleteSearch(${i})">🗑️</span>
                 </div>`;
             });
