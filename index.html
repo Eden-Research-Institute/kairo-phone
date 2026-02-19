@@ -179,7 +179,7 @@
         }
         .sb-card:active { transform: scale(0.98); }
         .sb-name { font-weight: bold; font-size: 14px; letter-spacing: 0.5px; }
-        .sb-desc { font-size: 11px; color: #ff4d4f; margin-top: 4px; opacity: 0.9; }
+        .sb-desc { font-size: 11px; margin-top: 4px; opacity: 0.9; }
 
         .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; opacity: 0.6; z-index: 200; }
 
@@ -293,11 +293,20 @@
                 <div id="search-list"></div>
 
                 <div class="secure-bookmark">
-                    <div class="sb-title">🔒 보안 즐겨찾기 (IP 우회 적용)</div>
+                    <div class="sb-title">📌 주요 사이트 (동향 파악 및 보안)</div>
+                    
+                    <a href="https://eden-research-institute.github.io/eden-system/public.html" target="_blank" class="sb-card" style="margin-bottom: 10px; background: #1a1a1a; border: 1px solid #333;">
+                        <div>
+                            <div class="sb-name">EDEN Institute (Public)</div>
+                            <div class="sb-desc" style="color:#aaa;">👀 대외 홍보 사이트 / 동향 파악용</div>
+                        </div>
+                        <div style="font-size: 20px;">📰</div>
+                    </a>
+
                     <a href="https://eden-research-institute.github.io/eden-system/" target="_blank" class="sb-card">
                         <div>
                             <div class="sb-name">EDEN Research System</div>
-                            <div class="sb-desc">⚠️ Top Secret / 접속 주의</div>
+                            <div class="sb-desc" style="color:#ff4d4f;">⚠️ Top Secret / 접속 주의</div>
                         </div>
                         <div style="font-size: 20px;">🌐</div>
                     </a>
@@ -352,8 +361,8 @@
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 6 (kairo_init_v6): 메모 내용 수정 적용 ★
-            if (!localStorage.getItem('kairo_init_v6')) {
+            // ★ 버전 7 (kairo_init_v7): (6자리) 텍스트 추가 및 사이트 업데이트 반영을 위한 강제 새로고침 ★
+            if (!localStorage.getItem('kairo_init_v7')) {
                 
                 const defaultPhotos = [
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
@@ -372,7 +381,7 @@
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
-                // 마지막 줄이 삭제된 메모 셋팅
+                // (6자리) 텍스트가 완벽하게 추가된 메모
                 const defaultMemos = [
                     { date: "오늘 새벽 02:00", text: "악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다.\n내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.\n이 손을 영원히 놓지 않을 것이다." },
                     { date: "어제", text: "오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다.\n단 것을 좋아하는구나. 기억해 둬야지.\n다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다." },
@@ -390,7 +399,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v6', 'true'); // V6 도장 쾅!
+                localStorage.setItem('kairo_init_v7', 'true'); // V7 도장 쾅!
             }
             
             renderGallery();
