@@ -361,8 +361,8 @@
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 7 (kairo_init_v7): (6자리) 텍스트 추가 및 사이트 업데이트 반영을 위한 강제 새로고침 ★
-            if (!localStorage.getItem('kairo_init_v7')) {
+            // ★ 버전 8 (kairo_init_v8): 확실한 데이터 갱신을 위해 도장 버전 올림 ★
+            if (!localStorage.getItem('kairo_init_v8')) {
                 
                 const defaultPhotos = [
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
@@ -381,7 +381,7 @@
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
-                // (6자리) 텍스트가 완벽하게 추가된 메모
+                // (6자리) 텍스트가 확실히 들어간 메모
                 const defaultMemos = [
                     { date: "오늘 새벽 02:00", text: "악몽을 꾸는 것 같아서 손을 잡아주었다. 떨림이 멈췄다.\n내 손이 차가워서 깰까 봐 걱정했는데, 오히려 더 꽉 쥐고 잠들었다.\n이 손을 영원히 놓지 않을 것이다." },
                     { date: "어제", text: "오늘 배식에 나온 푸딩을 보고 눈이 동그랗게 커졌다.\n단 것을 좋아하는구나. 기억해 둬야지.\n다음엔 몰래 초콜릿을 가져다 줄까? 걸리면 징계지만 상관없다." },
@@ -399,7 +399,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v7', 'true'); // V7 도장 쾅!
+                localStorage.setItem('kairo_init_v8', 'true'); // V8 도장 쾅!
             }
             
             renderGallery();
