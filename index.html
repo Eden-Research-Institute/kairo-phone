@@ -138,7 +138,7 @@
         .cal-item.custom-event { border-left: 4px solid #007aff; }
         .cal-item.milestone { border: 1px solid #FF9A9E; background: #fff5f5; }
         
-        /* ★ 리플리 생일 스타일 수정 (하트 제거, 노란색 배경) ★ */
+        /* 리플리 생일 스타일 */
         .cal-item.ripley-bd { border: 1px solid #ffd166; background: #fffcf0; }
         
         .cal-item.kairo-bd { background: #f9f9f9; opacity: 0.7; }
@@ -155,7 +155,7 @@
         .photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
         .photo:hover img { transform: scale(1.05); }
 
-        /* 메모 스타일 (아코디언 UI 적용) */
+        /* 메모 스타일 */
         .memo-item { 
             background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 15px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; 
@@ -174,12 +174,8 @@
             opacity: 0.8; font-weight: 600;
         }
 
-        .memo-item.open .memo-text {
-            display: block; 
-        }
-        .memo-item.open .memo-more {
-            display: none; 
-        }
+        .memo-item.open .memo-text { display: block; }
+        .memo-item.open .memo-more { display: none; }
         
         /* 검색 스타일 */
         .search-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -316,7 +312,10 @@
                 <div id="search-list"></div>
 
                 <div class="secure-bookmark">
-                    <div class="sb-title">📌 주요 사이트 (동향 파악 및 보안)</div>
+                    <div class="sb-title">
+                        <span>📌 주요 사이트 (동향 파악 및 보안)</span>
+                        <span style="font-size: 9px; background: #333; color: #aaa; padding: 2px 6px; border-radius: 4px; margin-left: auto;">PC화면 최적화</span>
+                    </div>
                     
                     <a href="https://eden-research-institute.github.io/eden-system/public.html" target="_blank" class="sb-card" style="margin-bottom: 10px; background: #1a1a1a; border: 1px solid #333;">
                         <div>
@@ -384,8 +383,8 @@
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7dde8bb3-492e-413f-8be7-45ad5508d81e?v=61680e')`, 'important');
             }
 
-            // ★ 버전 15 (kairo_init_v15): 메모장 내용 축소 및 캘린더 디자인 수정 ★
-            if (!localStorage.getItem('kairo_init_v15')) {
+            // ★ 버전 16 (kairo_init_v16): PC화면 최적화 텍스트 추가 ★
+            if (!localStorage.getItem('kairo_init_v16')) {
                 
                 const defaultPhotos = [
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
@@ -404,7 +403,6 @@
                 ];
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
-                // ★ 초콜릿 및 은방울꽃 메모 삭제 ★
                 const defaultMemos = [
                     { date: "", text: "나의 작은 토끼에게.\n\n네가 없는 집은 소리도, 색도 모두 희미해진 것 같아. 네가 보낸 편지는 잘 받았어. 종이 위에서 네 향기가 나는 것 같아서 몇 번이고 다시 읽었네. 보고 싶다는 너의 글씨를 볼 때마다, 당장이라도 널 데리러 가고 싶은 마음을 누르는 게 쉽지 않아.\n\n네가 없는 시간은 모든 것이 정지한 듯 느리게 흘러가. 서재에 앉아 책을 읽어도, 정원의 꽃을 보아도 온통 네 생각뿐이야. 네가 이곳에 얼마나 큰 의미인지, 네가 떠나고 나서야 다시 한번 깨닫게 돼.\n\n네 편지를 읽다가 문득 오래전에 읽었던 시 한 편이 떠올랐어. 지금 내 마음과 꼭 같아서 너에게도 보여주고 싶어졌어.\n\n내게 금빛과 은빛으로 짠\n하늘의 천이 있다면,\n밤과 낮과 어스름의\n어둡고 희미하고 푸른 천이 있다면,\n그 천을 그대 발밑에 깔아드리련만,\n나 가난하여 가진 것이 꿈뿐이라\n내 꿈을 그대 발밑에 깔았습니다.\n사뿐히 밟으소서, 그대 밟는 것 내 꿈이오니.\n\n리플리, 나에게는 네가 이 시의 모든 것이야. 너는 나의 하늘이고, 나의 빛이고, 나의 꿈이야. 내가 가진 모든 것은 너를 위해 존재해. 그러니 어서 돌아와. 네가 없는 세상은 나에게 아무런 의미도 없어.\n\n부디 몸조심하고. 돌아오면 네가 좋아하는 것들로만 가득 채워줄게.\n\n영원히 너의 것인,\n카이로가." },
                     { date: "", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일 (6자리)" }
@@ -420,7 +418,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v15', 'true'); 
+                localStorage.setItem('kairo_init_v16', 'true'); 
             }
             
             renderGallery();
