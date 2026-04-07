@@ -375,20 +375,20 @@
 
     <script>
         function initApp() {
+            // 사용자가 직접 설정한 배경화면
             const savedWp = localStorage.getItem('kairo_wallpaper');
             
+            // ★ 수정: 사용자가 설정한 배경화면이 있으면 그걸 띄우고, 없으면 우리가 정한 숲속 이미지를 띄운다! ★
             if (savedWp) {
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${savedWp}')`, 'important');
             } else {
-                // ★ 기본 배경화면 URL 수정 ★
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/9c99d598-19f8-4dd7-b026-0f11d2de731e?v=0e872e')`, 'important');
             }
 
-            // ★ 버전 17 (kairo_init_v17): 기본 배경화면 수정 적용 ★
-            if (!localStorage.getItem('kairo_init_v17')) {
+            // ★ 버전 18 (kairo_init_v18): 강제 덮어씌우기 삭제 ★
+            if (!localStorage.getItem('kairo_init_v18')) {
                 
-                // 기존 저장된 배경화면이 있다면 삭제하여 새로운 기본 배경이 보이도록 함
-                localStorage.removeItem('kairo_wallpaper');
+                // localStorage.removeItem('kairo_wallpaper'); // <- 이 녀석을 지웠습니다! 이제 사용자의 설정이 날아가지 않아요.
 
                 const defaultPhotos = [
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
@@ -401,7 +401,6 @@
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/20e0a848-300b-4b28-a3e8-9c58ff65d2b1?v=e8acb5"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/bf6eceb7-98fc-4676-b5e0-0a50a2f66f4c?v=0e872e"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/5f0bbb35-51f0-4beb-acbb-95a2b542b258?v=6a8000"},
-                    // ★ 새로운 배경화면을 앨범에 추가 ★
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/9c99d598-19f8-4dd7-b026-0f11d2de731e?v=0e872e"}, 
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/b6cbce53-4d46-4a2f-9d8b-92f19985a2c0?v=96c701"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7642d884-94fe-4413-9a16-5568d7186ab3?v=b17834"} 
@@ -423,7 +422,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v17', 'true'); 
+                localStorage.setItem('kairo_init_v18', 'true'); 
             }
             
             renderGallery();
@@ -619,7 +618,7 @@
             if(!currentImageSrc) return;
             localStorage.setItem('kairo_wallpaper', currentImageSrc);
             document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${currentImageSrc}')`, 'important');
-            alert("배경화면이 설정되었습니다!");
+            alert("배경화면이 예쁘게 설정되었습니다! ✨");
         }
         function downloadImage() { const a=document.createElement('a'); a.href=currentImageSrc; a.download='kairo_memory.png'; a.click(); }
         function deletePhoto() {
