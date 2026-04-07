@@ -137,10 +137,7 @@
         .cal-item { background: #fff; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); border: 1px solid #eee; position: relative; overflow: hidden; }
         .cal-item.custom-event { border-left: 4px solid #007aff; }
         .cal-item.milestone { border: 1px solid #FF9A9E; background: #fff5f5; }
-        
-        /* 리플리 생일 스타일 */
         .cal-item.ripley-bd { border: 1px solid #ffd166; background: #fffcf0; }
-        
         .cal-item.kairo-bd { background: #f9f9f9; opacity: 0.7; }
         .cal-item.love-day { background: #fff0f6; border-color: #ffadd2; }
         .cal-title { font-size: 15px; font-weight: 700; color: #333; display: flex; align-items: center; gap: 5px; }
@@ -375,22 +372,39 @@
 
     <script>
         function initApp() {
-            // 사용자가 직접 설정한 배경화면
             const savedWp = localStorage.getItem('kairo_wallpaper');
             
-            // ★ 수정: 사용자가 설정한 배경화면이 있으면 그걸 띄우고, 없으면 우리가 정한 숲속 이미지를 띄운다! ★
             if (savedWp) {
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${savedWp}')`, 'important');
             } else {
                 document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/9c99d598-19f8-4dd7-b026-0f11d2de731e?v=0e872e')`, 'important');
             }
 
-            // ★ 버전 18 (kairo_init_v18): 강제 덮어씌우기 삭제 ★
-            if (!localStorage.getItem('kairo_init_v18')) {
+            // ★ 버전 22 (kairo_init_v22): 기존 사진 유지 + 신규 사진 18장 상단부터 순서대로 병합 ★
+            if (!localStorage.getItem('kairo_init_v22')) {
                 
-                // localStorage.removeItem('kairo_wallpaper'); // <- 이 녀석을 지웠습니다! 이제 사용자의 설정이 날아가지 않아요.
-
+                // 새로 요청하신 18장 (위쪽에 있을수록 예전 사진) + 기존 13장 통합!
                 const defaultPhotos = [
+                    // --- 새로 주신 이미지 18장 ---
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/c4821642-6c93-4e46-bf52-e792d3923e04?v=046e43"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/150767a4-83d7-4278-bbb1-f05fa15e0103?v=98f6d1"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/18589b9c-4d88-42cd-946e-08a9248a1eb1?v=f11ad7"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/d8289287-1ff9-48c7-949c-ad3e3a1dab98?v=37be1c"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/4cd06674-9abc-45f1-a01b-a531cc32a702?v=1d870f"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/67eaaaa7-d8f1-4a5f-ac28-43ee379e5a8f?v=b5731a"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/ac97e92e-e84a-4102-ae9e-f31191178b29?v=7b6110"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/9bd3a92e-fdd3-48df-8a97-b3721bf965a4?v=b153c8"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/abee3cdb-4db6-458a-a45e-64619d3c95f9?v=d28326"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/495db9b3-911c-4a43-80c2-70c32f195e54?v=27899c"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/e9148e89-bc28-4792-a77e-443169c24681?v=e01f06"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/f74d6007-e387-4b91-896f-2a5d147e6b82?v=3da74e"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/6407db8f-410f-4206-b80d-af69d223b041?v=1d16ee"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/812d7ea4-469c-4abb-b07e-052fc5de3b7f?v=2ed464"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/2f601b11-63ba-45c9-af27-ecd974b4b642?v=6878fd"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7b0a380f-21e2-4157-a63f-a433250d194f?v=31241b"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/266523fd-8b7f-4e7f-9726-02fa39eb0f2d?v=182876"},
+                    {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/27b9341f-1ebf-4118-8938-43581ca9c008?v=9a0329"},
+                    // --- 기존 이미지 13장 ---
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/bb496573-be95-4f33-bdb2-fbd1cc20a863?v=4707ea"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/eb1e6577-841e-4fa2-a160-b9e78e317fe9?v=53a9b6"},
@@ -408,6 +422,9 @@
                 localStorage.setItem('kairo_user_photos', JSON.stringify(defaultPhotos));
                 
                 const defaultMemos = [
+                    { date: "", text: "“난 내 선택에 대한 책임을 네게 지우지 않아. 그건 전부 내 선택이야. 내가 감당할 일이고.”\n그가 주머니에서 연구소 출입카드를 꺼내 바닥에 던졌다. 카드가 차가운 바닥에 부딪히며 날카로운 소리를 냈다.\n“봐. 이렇게 쉽게 버릴 수 있어. 네가 원한다면 지금 당장 이 모든 걸 버리고 떠날 수 있어.”\n카이로의 목소리가 점점 더 간절해졌다.\n“난 그저... 네 대답이 필요해.”" },
+                    { date: "", text: "“네가 잠든 밤에는 달이 되어 지켜주고, 네가 눈을 뜬 아침에는 태양이 되어 너를 비춰줄게. 흐린 날에는 구름이 되어 함께 머무르고, 비가 오는 날에는 우산이 되어주지. 나는 너의 밤과 낮, 너의 모든 계절, 네가 발 딛고 숨 쉬는 세상 전부가 되고 싶어.”" },
+                    { date: "", text: "“내가 갈게. 네가 어디에 있든, 설령 네가 길을 잃고 헤매는 아주 깊은 꿈속이라 해도. 내가 반드시 너를 찾아갈 거야. 그러니까 리플리, 너는 아무것도 하지 않아도 돼. 그저 내심장 소리를 이정표 삼아, 그 자리에서 나를 기다려주기만 하면 돼.”" },
                     { date: "", text: "나의 작은 토끼에게.\n\n네가 없는 집은 소리도, 색도 모두 희미해진 것 같아. 네가 보낸 편지는 잘 받았어. 종이 위에서 네 향기가 나는 것 같아서 몇 번이고 다시 읽었네. 보고 싶다는 너의 글씨를 볼 때마다, 당장이라도 널 데리러 가고 싶은 마음을 누르는 게 쉽지 않아.\n\n네가 없는 시간은 모든 것이 정지한 듯 느리게 흘러가. 서재에 앉아 책을 읽어도, 정원의 꽃을 보아도 온통 네 생각뿐이야. 네가 이곳에 얼마나 큰 의미인지, 네가 떠나고 나서야 다시 한번 깨닫게 돼.\n\n네 편지를 읽다가 문득 오래전에 읽었던 시 한 편이 떠올랐어. 지금 내 마음과 꼭 같아서 너에게도 보여주고 싶어졌어.\n\n내게 금빛과 은빛으로 짠\n하늘의 천이 있다면,\n밤과 낮과 어스름의\n어둡고 희미하고 푸른 천이 있다면,\n그 천을 그대 발밑에 깔아드리련만,\n나 가난하여 가진 것이 꿈뿐이라\n내 꿈을 그대 발밑에 깔았습니다.\n사뿐히 밟으소서, 그대 밟는 것 내 꿈이오니.\n\n리플리, 나에게는 네가 이 시의 모든 것이야. 너는 나의 하늘이고, 나의 빛이고, 나의 꿈이야. 내가 가진 모든 것은 너를 위해 존재해. 그러니 어서 돌아와. 네가 없는 세상은 나에게 아무런 의미도 없어.\n\n부디 몸조심하고. 돌아오면 네가 좋아하는 것들로만 가득 채워줄게.\n\n영원히 너의 것인,\n카이로가." },
                     { date: "", text: "[에덴(EDEN) 연구소 시스템 접속 정보]\n비상시를 대비해 남겨둠.\n\n- 아이디: 사원증 뒷면\n- 비밀번호: 로판AI 생성일 (6자리)" }
                 ];
@@ -422,7 +439,7 @@
                 ];
                 localStorage.setItem('kairo_searches', JSON.stringify(defaultSearches));
 
-                localStorage.setItem('kairo_init_v18', 'true'); 
+                localStorage.setItem('kairo_init_v22', 'true'); 
             }
             
             renderGallery();
@@ -618,7 +635,7 @@
             if(!currentImageSrc) return;
             localStorage.setItem('kairo_wallpaper', currentImageSrc);
             document.querySelector('.home-screen').style.setProperty('background-image', `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('${currentImageSrc}')`, 'important');
-            alert("배경화면이 예쁘게 설정되었습니다! ✨");
+            alert("배경화면이 설정되었습니다!");
         }
         function downloadImage() { const a=document.createElement('a'); a.href=currentImageSrc; a.download='kairo_memory.png'; a.click(); }
         function deletePhoto() {
