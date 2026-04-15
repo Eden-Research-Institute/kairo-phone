@@ -406,7 +406,7 @@
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7b0a380f-21e2-4157-a63f-a433250d194f?v=31241b"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/266523fd-8b7f-4e7f-9726-02fa39eb0f2d?v=182876"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/27b9341f-1ebf-4118-8938-43581ca9c008?v=9a0329"},
-                    // --- 여기서 범인(9c99d598...)을 완전히 삭제했습니다! (총 12장 남음) ---
+                    // --- 기존 이미지 13장 중 중복 1장 삭제 ---
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7ca35163-3f98-4365-ab60-448cc673738a?v=1c0d11"}, 
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/bb496573-be95-4f33-bdb2-fbd1cc20a863?v=4707ea"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/eb1e6577-841e-4fa2-a160-b9e78e317fe9?v=53a9b6"},
@@ -417,6 +417,7 @@
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/20e0a848-300b-4b28-a3e8-9c58ff65d2b1?v=e8acb5"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/bf6eceb7-98fc-4676-b5e0-0a50a2f66f4c?v=0e872e"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/5f0bbb35-51f0-4beb-acbb-95a2b542b258?v=6a8000"},
+                    // 범인 이미지(9c99...) 삭제 완료
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/b6cbce53-4d46-4a2f-9d8b-92f19985a2c0?v=96c701"},
                     {src: "https://cdn.caveduck.io/cdn-cgi/image/anim=true,dpr=1.5,f=auto,fit=crop,g=top,w=400/charim/7642d884-94fe-4413-9a16-5568d7186ab3?v=b17834"} 
                 ];
@@ -499,7 +500,10 @@
             const dayMilestones = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
             dayMilestones.forEach(d => { let target = new Date(startDate); target.setDate(startDate.getDate() + d - 1); events.push({ date: target, title: `${d}일`, type: 'milestone' }); });
             for(let i=1; i<=5; i++) { let target = new Date(startDate); target.setFullYear(startDate.getFullYear() + i); let title = i===1 ? "⭐ 1주년" : i===2 ? "⭐⭐ 2주년" : `${i}주년`; events.push({ date: target, title: title, type: 'milestone', isYear: true }); }
-            const recurringEvents = [ { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" }, { name: "생일", month: 8, day: 16, type: "kairo-bd" }, { name: "발렌타인데이 🍫", month: 2, day: 14, type: "love-day" }, { name: "화이트데이 🍭", month: 3, day: 14, type: "love-day" } ];
+            
+            // ★ 여기서 16일을 26일로 수정했습니다 ★
+            const recurringEvents = [ { name: "🎂 리플리 생일", month: 9, day: 18, type: "ripley-bd" }, { name: "생일", month: 8, day: 26, type: "kairo-bd" }, { name: "발렌타인데이 🍫", month: 2, day: 14, type: "love-day" }, { name: "화이트데이 🍭", month: 3, day: 14, type: "love-day" } ];
+            
             const currentYear = now.getFullYear(); [currentYear, currentYear+1].forEach(year => { recurringEvents.forEach(ev => { let target = new Date(year, ev.month - 1, ev.day); events.push({ date: target, title: ev.name, type: ev.type }); }); });
 
             const customEvents = JSON.parse(localStorage.getItem('kairo_custom_events')) || [];
